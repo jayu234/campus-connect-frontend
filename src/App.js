@@ -1,26 +1,17 @@
-import Header from "./components/Header"
+import * as React from "react"
 import Home from "./components/Home"
-// import { MuiThemeProvider, createMuiTheme } from "material-ui/styles"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
 	return (
-		<div>
-			{/* <MuiThemeProvider theme={THEME}> */}
-				<Header />
-				<Home />
-			{/* </MuiThemeProvider> */}
-		</div>
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Home />} errorElement={<PageNotFound/>}/>
+				<Route path="/login" element={<Login/>}/>
+			</Routes>
+		</BrowserRouter>
 	)
 }
-
-// const THEME = createMuiTheme({
-// 	typography: {
-// 		fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
-// 		fontSize: 14,
-// 		fontWeightLight: 300,
-// 		fontWeightRegular: 400,
-// 		fontWeightMedium: 500,
-// 	},
-// })
-
 export default App
