@@ -5,12 +5,13 @@ import Feed from './Feed'
 import Footer from './Footer'
 import Header from './Header'
 import RightSidebar from './RightSidebar'
+import { Outlet } from 'react-router-dom'
 function Home() {
     return (
         <>
             <Header />
             <Box sx={{ paddingX: '1rem' }}>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                     <Grid item component={'aside'} xs={2}>
                         <Box sx={{ position: 'sticky', top: '20px' }}>
                             <LeftSidebar />
@@ -18,7 +19,7 @@ function Home() {
                         </Box>
                     </Grid>
                     <Grid item xs={7}>
-                        <Feed />
+                        <Outlet />
                     </Grid>
                     <Grid item xs={3}>
                         <RightSidebar/>
