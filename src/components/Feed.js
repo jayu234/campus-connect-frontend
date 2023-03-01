@@ -63,12 +63,12 @@ function Feed() {
     return (
         <Grid component={'div'} container direction={'column'}>
             <Grid item sx={{ border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', backgroundColor: '#fff', marginBottom: '1rem', ":hover": { borderColor: '#cfcfcf' } }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', columnGap: '1rem', padding: '0.75rem' }}>
-                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', columnGap: '1rem' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', columnGap: '1rem', padding: '1.00rem' }}>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Avatar alt='Profile pic' src='/images/avatar.png' />
-                        <TextField fullWidth variant="outlined" placeholder='What do you want to ask or share?' sx={{ borderRadius: '16px', padding: '0.5rem' }} />
+                        <TextField fullWidth variant="outlined" placeholder='What do you want to ask or share?' sx={{ borderRadius: '16px' , marginLeft: '1rem'}} />
                     </Box>
-                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', columnGap: '1rem' }}>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', columnGap: '1rem' , marginTop: '1rem'}}>
                         <Button onClick={handleOpen} fullWidth sx={{ borderRadius: '16px', padding: '0.5rem', textTransform: 'none' }} startIcon={<LiveHelpIcon />}>Ask</Button>
                         <Divider orientation="vertical" flexItem />
                         <Button onClick={handleOpen} fullWidth sx={{ borderRadius: '16px', padding: '0.5rem', textTransform: 'none' }} startIcon={<QuestionAnswerIcon />}>Answer</Button>
