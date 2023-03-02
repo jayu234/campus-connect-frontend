@@ -12,7 +12,7 @@ function Home() {
             <Header />
             <Box sx={{ paddingX: '1rem' }}>
                 <Grid container spacing={2}>
-                    <Grid item component={'aside'} xs={2}>
+                    <Grid item component={'aside'} xs={2.5}>
                         <Box sx={{ position: 'sticky', top: '20px' }}>
                             <LeftSidebar />
                             <Footer />
@@ -21,7 +21,7 @@ function Home() {
                     <Grid item xs={7}>
                         <Outlet />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={2.5}>
                         <RightSidebar/>
                     </Grid>
                 </Grid>
