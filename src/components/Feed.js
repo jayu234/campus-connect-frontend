@@ -28,7 +28,7 @@ function Feed() {
                 </Box>
                 {open && <MainModal open={open} tabInd={tabInd} setOpen={setOpen} />}
             </Grid>
-            <Grid item sx={{ background: '#efefef', height: '100vh', border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', backgroundColor: '#fff' }} >
+            <Grid item sx={{ background: '#efefef', border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', backgroundColor: '#fff' }} >
                 {[posts.map((item) => { return <PostItem key={item._id} post={item} /> })]}
             </Grid>
         </Grid>

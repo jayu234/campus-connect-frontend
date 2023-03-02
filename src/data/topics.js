@@ -1,30 +1,44 @@
 export const topics = [
     {
+        _id: 1,
         label: "Web Developement",
-        imgName: "webdev"
+        imgName: "webdev",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 2,
         label: "Computer Programming",
-        imgName: "webdev"
+        imgName: "computer-programming",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 3,
         label: "System design",
-        imgName: "webdev"
+        imgName: "system-design",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 4,
         label: "App Developement",
-        imgName: "webdev"
+        imgName: "appdev",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 5,
         label: "Java language",
-        imgName: "webdev"
+        imgName: "javalang",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 6,
         label: "Python Programming",
-        imgName: "webdev"
+        imgName: "python-programming",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
     {
+        _id: 7,
         label: "Competitive Programming",
-        imgName: "webdev"
+        imgName: "competitive-programming",
+        description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
     },
 ];

@@ -36,7 +36,7 @@ function RightSidebar() {
           <Divider/>
           <ListItem sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
             <ListItemAvatar><Avatar src='/images/event1.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-            <ListItemText primary={"Spectrum - ADIT Anual Fest"} primaryTypographyProps={{ fontFamily: "inherit" }} />
+            <ListItemText primary={"Spectrum - ADIT Annual Fest"} primaryTypographyProps={{ fontFamily: "inherit" }} />
           </ListItem>
         </List>
       </Box>

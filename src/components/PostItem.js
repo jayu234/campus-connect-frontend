@@ -29,7 +29,7 @@ export default function PostItem({ post }) {
 
     const date = new Date(post.createdAt);
     return (
-        <Card sx={{ my: '1rem', width: '100%', display: 'flex', flexDirection: 'column', boxShadow: 'none' }}>
+        <Card sx={{ marginTop: '1rem', width: '100%', display: 'flex', flexDirection: 'column', boxShadow: 'none' }}>
             <CardHeader
                 avatar={
                     <Avatar src='/images/avatar.png' aria-label="recipe" />

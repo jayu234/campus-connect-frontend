@@ -11,9 +11,9 @@ function Home() {
         <>
             <Header />
             <Box sx={{ paddingX: '1rem' }}>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} component="div" sx={{height: "100%"}}>
                     <Grid item component={'aside'} xs={2.5}>
-                        <Box sx={{ position: 'sticky', top: '20px' }}>
+                        <Box sx={{ height: "100vh",position: 'sticky', top: '20px' }}>
                             <LeftSidebar />
                             <Footer />
                         </Box>
