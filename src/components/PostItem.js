@@ -34,6 +34,16 @@ export default function PostItem({ post }) {
                 avatar={
                     <Avatar src='/images/avatar.png' aria-label="recipe" />
                 }
+                action={
+                    <IconButton
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        aria-label="settings"
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                }
                 title={post.author.name}
                 subheader={`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
                 sx={{ padding: '0.5rem 1rem' }}
@@ -55,14 +65,6 @@ export default function PostItem({ post }) {
                     </Button>
                     <Button startIcon={<ThumbDownIcon fontSize='small' />} />
                 </Box>
-                <IconButton
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={handleMenu}
-                    aria-label="settings"
-                >
-                    <MoreVertIcon />
-                </IconButton>
                 <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
@@ -78,11 +80,11 @@ export default function PostItem({ post }) {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem>
+                    <MenuItem onClick={handleClose} >
                         <EditIcon fontSize='small' sx={{ marginRight: '1rem' }} />
                         Edit
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleClose}>
                         <ShareIcon fontSize='small' sx={{ marginRight: '1rem' }} />
                         Share
                     </MenuItem>

@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, Box } from '@mui/material'
 import LeftSidebar from './LeftSidebar'
-import Feed from './Feed'
 import Footer from './Footer'
 import Header from './Header'
 import RightSidebar from './RightSidebar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 function Home() {
+
+    const {user} = useSelector((state)=>state.user);
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(!user){ 
+            navigate("/login");
+        }
+    },[])
     return (
         <>
             <Header />

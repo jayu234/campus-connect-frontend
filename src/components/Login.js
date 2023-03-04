@@ -1,5 +1,4 @@
 import * as React from "react"
-import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import FormControlLabel from "@mui/material/FormControlLabel"
@@ -7,43 +6,55 @@ import Checkbox from "@mui/material/Checkbox"
 import Link from "@mui/material/Link"
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import Snackbar from '@mui/material/Snackbar';
 import Typography from "@mui/material/Typography"
-import { createTheme } from "@mui/material/styles"
-import { width } from "@mui/system"
+import MuiAlert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { userLogin } from "../store/userSlice"
 
-function Copyright(props) {
-	return (
-		<Typography
-			variant="body2"
-			color="text.secondary"
-			align="center"
-			{...props}
-		>
-			{"Copyright © "}
-			<Link color="inherit" href="https://mui.com/">
-				Your Website
-			</Link>{" "}
-			{new Date().getFullYear()}
-			{"."}
-		</Typography>
-	)
-}
 
-const theme = createTheme()
+const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
+const vertical = 'bottom', horizontal = 'center';
 function Login() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { user, success, isError, isLoading, message } = useSelector((state) => state.user);
+	const [errorMessage, setErrorMessage] = React.useState("");
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			email: data.get("email"),
-			password: data.get("password"),
-		})
+		dispatch(userLogin(credentials));
 	}
+	const [open, setOpen] = React.useState(false);
+	const [credentials, setCredentials] = React.useState({ email: "", password: "" });
 
-	const navigate = useNavigate();
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		setOpen(false);
+	};
+	React.useEffect(() => {
+		if (user) {
+			navigate("/");
+		}
+		if (user && success) {
+			navigate("/")
+		}
+
+	}, [user]);
+	React.useEffect(() => {
+		if (isError) {
+			setErrorMessage(message);
+			setOpen(true);
+		}
+	}, [isLoading])
 	return (
 		<>
 			<Box
@@ -110,8 +121,7 @@ function Login() {
 					<Box>
 						<img
 							style={{ width: "30rem", borderRadius: "1rem" }}
-							src="/images/webdev.jpg"
-							fullWidth
+							src="/images/user-profile.svg"
 							alt="Welcome to our website"
 						/>
 					</Box>
@@ -125,7 +135,7 @@ function Login() {
 							alignItems: "center",
 						}}
 					>
-						<Typography sx={{color: '#2962ff'}} component="h1" variant="h5">
+						<Typography sx={{ color: '#2962ff' }} component="h1" variant="h5">
 							<strong>Login</strong>
 						</Typography>
 						<Box component="form" noValidate onSubmit={handleSubmit}>
@@ -136,8 +146,12 @@ function Login() {
 								id="email"
 								label="Email Address"
 								name="email"
-								autoComplete="email"
 								autoFocus
+								onChange={(e) => {
+									setCredentials({ ...credentials, [e.target.name]: e.target.value })
+								}}
+								value={credentials.email}
+								autoComplete="email"
 							/>
 							<TextField
 								margin="dense"
@@ -147,6 +161,10 @@ function Login() {
 								label="Password"
 								type="password"
 								id="password"
+								value={credentials.password}
+								onChange={(e) => {
+									setCredentials({ ...credentials, [e.target.name]: e.target.value })
+								}}
 								autoComplete="current-password"
 							/>
 							<FormControlLabel
@@ -167,7 +185,7 @@ function Login() {
 								</Link>
 							</Grid>
 							<Grid item sx={{ display: "flex", justifyContent: "center" }}>
-								<Button onClick={()=>{navigate("/signup")}} variant="text" sx={{textTransform: "none", ":hover":{backgroundColor: "transparent"}}}>
+								<Button onClick={() => { navigate("/signup") }} variant="text" sx={{ textTransform: "none", ":hover": { backgroundColor: "transparent" } }}>
 									{"Don't have an account? Sign Up"}
 								</Button>
 							</Grid>
@@ -197,6 +215,19 @@ function Login() {
 					</Box>
 				</Box>
 			</Box>
+			<Stack spacing={2} sx={{ width: '100%' }}>
+				<Snackbar
+					open={open}
+					anchorOrigin={{ vertical, horizontal }}
+					key={vertical + horizontal}
+					autoHideDuration={3000}
+					onClose={handleClose}
+				>
+					<Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+						{errorMessage}
+					</Alert>
+				</Snackbar>
+			</Stack>
 		</>
 	)
 }
