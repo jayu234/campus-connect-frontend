@@ -22,7 +22,7 @@ function App() {
 				</Route>
 				<Route exact path="/login" element={<Login />} />
 				<Route exact path="/signup" element={<Signup />} />
-				<Route exact path="/user" element={<Profile />} />
+				<Route exact path="/profile" element={<Profile />} />
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</BrowserRouter>
