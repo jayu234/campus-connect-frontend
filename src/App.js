@@ -5,6 +5,7 @@ import Login from "./components/Login"
 import Signup from "./components/Signup"
 import PageNotFound from "./components/PageNotFound"
 import Following from "./components/Following"
+import Profile from "./components/Profile"
 import Feed from "./components/Feed"
 import Answer from "./components/Answer"
 import Events from "./components/Events"
@@ -21,6 +22,7 @@ function App() {
 				</Route>
 				<Route exact path="/login" element={<Login />} />
 				<Route exact path="/signup" element={<Signup />} />
+				<Route exact path="/profile" element={<Profile />} />
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</BrowserRouter>
