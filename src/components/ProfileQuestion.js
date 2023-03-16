@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import { Grid, Box, Avatar, TextField, Button, Divider } from "@mui/material"
 import LiveHelpIcon from "@mui/icons-material/LiveHelp"
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer"
@@ -10,11 +10,11 @@ import ProfileQuestionComponent from "./ProfileQuestionComponent"
 function ProfileQuestion() {
 	return (
 		<Box>
-				{[
-					questions.map((item) => {
-						return <ProfileQuestionComponent key={item.question} post={item} />
-					}),
-				]}
+			{[
+				questions.map((item) => {
+					return <ProfileQuestionComponent key={item.question} post={item} />
+				}),
+			]}
 		</Box>
 	)
 }

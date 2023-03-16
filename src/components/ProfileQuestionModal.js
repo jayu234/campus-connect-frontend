@@ -86,7 +86,7 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 						<CloseRoundedIcon sx={{ width: 20, height: 20 }} />
 					</IconButton>
 				</Box>
-				<Box sx={{padding:'0rem 1rem 3rem 1rem'}}>
+				<Box sx={{ padding: "0rem 1rem 3rem 1rem" }}>
 					<Grid container>
 						<Grid item component={"aside"} xs={1.1}>
 							<Avatar
