@@ -67,12 +67,17 @@ function Header() {
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
-
+	const navigate = useNavigate();
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+	const handleAction = (setting) =>{
+		if(setting === "Profile"){
+			navigate("/profile");
+		}
+		handleCloseUserMenu();
+	}
 	const [open, setOpen] = React.useState(false);
-	const navigate = useNavigate();
 	return (
 		<>
 			{open && <MainModal open={open} tabInd={0} setOpen={setOpen} />}
@@ -178,7 +183,7 @@ function Header() {
 								onClose={handleCloseUserMenu}
 							>
 								{settings.map((setting) => (
-									<MenuItem key={setting} onClick={handleCloseUserMenu}>
+									<MenuItem key={setting} onClick={()=>{handleAction(setting)}}>
 										<Typography textAlign="center">{setting}</Typography>
 									</MenuItem>
 								))}

@@ -106,7 +106,7 @@ function Signup() {
 	}
 	const navigate = useNavigate()
 
-	
+
 	//Stepper
 	const [activeStep, setActiveStep] = React.useState(0)
 	const [skipped, setSkipped] = React.useState(new Set())
@@ -124,6 +124,22 @@ function Signup() {
 
 		setActiveStep((prevActiveStep) => prevActiveStep + 1)
 		setSkipped(newSkipped)
+
+		if (activeStep === steps.length - 1)
+		{
+			console.log({
+				...userData,
+				gender: gender,
+				college: collegeName,
+				course: course,
+				city: city,
+				interests: interestData
+			});
+
+			setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+		}
 	}
 
 	const handleBack = () => {
@@ -155,13 +171,13 @@ function Signup() {
 	}
 
 	const theme = useTheme()
-	const [personName, setPersonName] = React.useState([])
+	const [interestData, setInterestData] = React.useState([])
 
 	const handleChange = (event) => {
 		const {
 			target: { value },
 		} = event
-		setPersonName(
+		setInterestData(
 			// On autofill we get a stringified value.
 			typeof value === "string" ? value.split(",") : value
 		)
@@ -176,8 +192,12 @@ function Signup() {
 
 	const [showCPassword, setShowCPassword] = React.useState(false)
 	const handleClickShowCPassword = () => setShowCPassword((show) => !show)
-	
 
+	const [userData, setUserData] = useState(null);
+
+	const handleOnChange = (e) => {
+		setUserData({ ...userData, [e.target.name]: e.target.value });
+	}
 	return (
 		<>
 			<Box
@@ -393,6 +413,7 @@ function Signup() {
 																		label="First Name"
 																		name="firstName"
 																		margin="dense"
+																		onChange={handleOnChange}
 																	/>
 																</Grid>
 																<Grid item xs={12} sm={6}>
@@ -403,6 +424,7 @@ function Signup() {
 																		label="Last Name"
 																		name="lastName"
 																		margin="dense"
+																		onChange={handleOnChange}
 																	/>
 																</Grid>
 																<Grid item xs={12}>
@@ -413,6 +435,7 @@ function Signup() {
 																		label="Username"
 																		name="username"
 																		sx={{ marginTop: "1rem" }}
+																		onChange={handleOnChange}
 																	/>
 																</Grid>
 																<Grid item xs={12}>
@@ -434,12 +457,9 @@ function Signup() {
 																				onChange={selectGender}
 																				label="Gender"
 																			>
-																				<MenuItem value={10}>Male</MenuItem>
-																				<MenuItem value={20}>Female</MenuItem>
-																				<MenuItem value={30}>
-																					Transgender
-																				</MenuItem>
-																				<MenuItem value={40}>Other</MenuItem>
+																				<MenuItem value={'male'}>Male</MenuItem>
+																				<MenuItem value={'female'}>Female</MenuItem>
+																				<MenuItem value={'other'}>Other</MenuItem>
 																			</Select>
 																		</FormControl>
 																	</Box>
@@ -452,6 +472,7 @@ function Signup() {
 																		label="Age"
 																		name="age"
 																		sx={{ marginTop: "1rem" }}
+																		onChange={handleOnChange}
 																	/>
 																</Grid>
 															</Grid>
@@ -480,8 +501,9 @@ function Signup() {
 																				fullWidth
 																				id="contact"
 																				label="Contact No"
-																				name="username"
+																				name="phone"
 																				sx={{ marginTop: "2rem" }}
+																				onChange={handleOnChange}
 																			/>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -492,6 +514,7 @@ function Signup() {
 																				label="Email Address"
 																				name="email"
 																				sx={{ marginTop: "1rem" }}
+																				onChange={handleOnChange}
 																			/>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -505,6 +528,7 @@ function Signup() {
 																				</InputLabel>
 																				<OutlinedInput
 																					id="outlined-adornment-password"
+																					name="passowrd"
 																					type={
 																						showPassword ? "text" : "password"
 																					}
@@ -530,6 +554,7 @@ function Signup() {
 																					}
 																					required
 																					label="Password"
+																					onChange={handleOnChange}
 																				/>
 																			</FormControl>
 																		</Grid>
@@ -544,6 +569,7 @@ function Signup() {
 																				</InputLabel>
 																				<OutlinedInput
 																					id="outlined-adornment-password"
+																					name="confirmPassowrd"
 																					type={
 																						showCPassword ? "text" : "password"
 																					}
@@ -569,6 +595,7 @@ function Signup() {
 																					}
 																					label="Confirm Password"
 																					required
+																					onChange={handleOnChange}
 																				/>
 																			</FormControl>
 																		</Grid>
@@ -610,14 +637,14 @@ function Signup() {
 																								label="College Name"
 																								onChange={selectCollege}
 																							>
-																								<MenuItem value={10}>
+																								<MenuItem value={"Birla Vishvakarma Mahavidyalaya"}>
 																									Birla Vishvakarma
 																									Mahavidyalaya
 																								</MenuItem>
-																								<MenuItem value={20}>
+																								<MenuItem value={"Dharmshibhai Desai University"}>
 																									Dharmshibhai Desai University
 																								</MenuItem>
-																								<MenuItem value={30}>
+																								<MenuItem value={"Maharaja Sayajirao University"}>
 																									Maharaja Sayajirao University
 																								</MenuItem>
 																							</Select>
@@ -642,16 +669,16 @@ function Signup() {
 																								label="Course"
 																								onChange={selectCourse}
 																							>
-																								<MenuItem value={10}>
+																								<MenuItem value={"Information Technology"}>
 																									Information Technology
 																								</MenuItem>
-																								<MenuItem value={20}>
+																								<MenuItem value={"Civil"}>
 																									Civil
 																								</MenuItem>
-																								<MenuItem value={30}>
+																								<MenuItem value={"Electronics"}>
 																									Electronics
 																								</MenuItem>
-																								<MenuItem value={40}>
+																								<MenuItem value={"Computer Science"}>
 																									Computer Science
 																								</MenuItem>
 																							</Select>
@@ -676,16 +703,16 @@ function Signup() {
 																								label="City"
 																								onChange={selectCity}
 																							>
-																								<MenuItem value={10}>
+																								<MenuItem value={"Anand"}>
 																									Anand
 																								</MenuItem>
-																								<MenuItem value={20}>
+																								<MenuItem value={"Surat"}>
 																									Surat
 																								</MenuItem>
-																								<MenuItem value={30}>
+																								<MenuItem value={"Rajkot"}>
 																									Rajkot
 																								</MenuItem>
-																								<MenuItem value={40}>
+																								<MenuItem value={"Nadiad"}>
 																									Nadiad
 																								</MenuItem>
 																							</Select>
@@ -711,7 +738,7 @@ function Signup() {
 																				labelId="demo-multiple-chip-label"
 																				id="demo-multiple-chip"
 																				multiple
-																				value={personName}
+																				value={interestData}
 																				onChange={handleChange}
 																				input={
 																					<OutlinedInput
@@ -740,7 +767,7 @@ function Signup() {
 																						value={name}
 																						style={getStyles(
 																							name,
-																							personName,
+																							interestData,
 																							theme
 																						)}
 																					>
@@ -767,6 +794,7 @@ function Signup() {
 																				label="Github URL"
 																				name="github"
 																				sx={{ marginTop: "1.5rem" }}
+																				onChange={handleOnChange}
 																			/>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -787,6 +815,7 @@ function Signup() {
 																				label="LinkedIn URL"
 																				name="linkedin"
 																				sx={{ marginTop: "1.5rem" }}
+																				onChange={handleOnChange}
 																			/>
 																		</Grid>
 																		<Grid item xs={12}>
@@ -809,6 +838,7 @@ function Signup() {
 																				sx={{
 																					marginTop: "1.5rem",
 																				}}
+																				onChange={handleOnChange}
 																			/>
 																		</Grid>
 																	</Box>

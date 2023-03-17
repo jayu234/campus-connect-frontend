@@ -8,20 +8,20 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 function Home() {
 
-    const {user} = useSelector((state)=>state.user);
+    const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
-    useEffect(()=>{
-        if(!user){ 
+    useEffect(() => {
+        if (!user) {
             navigate("/login");
         }
-    },[])
+    }, [])
     return (
         <>
             <Header />
             <Box sx={{ paddingX: '1rem' }}>
-                <Grid container spacing={2} component="div" sx={{height: "100%"}}>
+                <Grid container spacing={2} component="div" sx={{ height: "100%" }}>
                     <Grid item component={'aside'} xs={2.5}>
-                        <Box sx={{ height: "100vh",position: 'sticky', top: '20px' }}>
+                        <Box sx={{ position: 'sticky', top: '20px' }}>
                             <LeftSidebar />
                             <Footer />
                         </Box>
@@ -30,7 +30,7 @@ function Home() {
                         <Outlet />
                     </Grid>
                     <Grid item xs={2.5}>
-                        <RightSidebar/>
+                        <RightSidebar />
                     </Grid>
                 </Grid>
             </Box>
