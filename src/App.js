@@ -9,6 +9,8 @@ import Profile from "./components/Profile"
 import Feed from "./components/Feed"
 import Answer from "./components/Answer"
 import Events from "./components/Events"
+import Topic from "./components/Topic"
+import AnswerPage from "./components/AnswerPage"
 
 function App() {
 	return (
@@ -19,7 +21,9 @@ function App() {
 					<Route exact path="/following" element={<Following />} />
 					<Route exact path="/answer" element={<Answer />} />
 					<Route exact path="/events" element={<Events />} />
+					<Route exact path="/topic" element={<Topic />} />
 				</Route>
+				<Route exact path="/question" element={<AnswerPage />} />
 				<Route exact path="/login" element={<Login />} />
 				<Route exact path="/signup" element={<Signup />} />
 				<Route exact path="/profile" element={<Profile />} />

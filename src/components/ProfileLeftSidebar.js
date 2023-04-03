@@ -20,7 +20,7 @@ function ProfileLeftSidebar() {
 								height: "5.5rem",
 								borderRadius: "1rem",
 							}}
-							src="/images/Cryst3l.jpg"
+							src="/images/z1.jpg"
 							alt="Welcome to our website"
 						/>
 					</Grid>

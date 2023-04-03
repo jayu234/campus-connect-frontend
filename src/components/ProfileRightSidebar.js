@@ -8,7 +8,6 @@ import ProfilePost from "./ProfilePost"
 import ProfileQuestion from "./ProfileQuestion"
 import ProfileAnswer from "./ProfileAnswer"
 import ProfileFollowing from "./ProfileFollowing"
-import ProfileFollowers from "./ProfileFollowers"
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
@@ -58,29 +57,25 @@ function ProfileRightSidebar() {
 						value={value}
 						onChange={handleChange}
 						aria-label="basic tabs example"
-            centered
+						centered
 					>
 						<Tab label="Post" {...a11yProps(0)} />
 						<Tab label="Questions" {...a11yProps(1)} />
 						<Tab label="Answers" {...a11yProps(2)} />
 						<Tab label="Following" {...a11yProps(3)} />
-						<Tab label="Followers" {...a11yProps(4)} />
 					</Tabs>
 				</Box>
 				<TabPanel value={value} index={0}>
-        <ProfilePost />					
+					<ProfilePost />
 				</TabPanel>
 				<TabPanel value={value} index={1}>
-        <ProfileQuestion />
+					<ProfileQuestion />
 				</TabPanel>
 				<TabPanel value={value} index={2}>
-        <ProfileAnswer />
+					<ProfileAnswer />
 				</TabPanel>
 				<TabPanel value={value} index={3}>
-        <ProfileFollowing />
-				</TabPanel>
-				<TabPanel value={value} index={4}>
-        <ProfileFollowers />
+					<ProfileFollowing />
 				</TabPanel>
 			</Box>
 		</>

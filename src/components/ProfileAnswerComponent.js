@@ -51,7 +51,7 @@ function ProfileAnswerComponent({ post }) {
 				}}
 			>
 				<CardHeader
-					avatar={<Avatar src={post.dp} aria-label="recipe" />}
+					avatar={<Avatar src={`/images/${post.dp}.jpg`} aria-label="recipe" />}
 					action={
 						<IconButton
 							aria-controls="menu-appbar"

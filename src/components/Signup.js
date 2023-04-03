@@ -202,7 +202,7 @@ function Signup() {
 		<>
 			<Box
 				sx={{
-					height: "45rem",
+					height: "100vh",
 					backgroundImage: `url("/images/signupBackground.jpg")`,
 				}}
 			>

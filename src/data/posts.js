@@ -17,7 +17,7 @@ export const posts = [
       },
       _id: "63d66c4166f6cab200624e72",
       username: "jayu",
-      name: "Jaivik goswami",
+      name: "Kashyap Bavadiya",
       email: "jayu@gmail.com"
     }
   },
@@ -39,7 +39,7 @@ export const posts = [
       },
       _id: "63d66c4166f6cab200624e72",
       username: "jayu",
-      name: "Jaivik goswami",
+      name: "Kashyap Bavadiya",
       email: "jayu@gmail.com"
     }
   },
@@ -61,7 +61,7 @@ export const posts = [
       },
       _id: "63d66c4166f6cab200624e72",
       username: "jayu",
-      name: "Jaivik goswami",
+      name: "Kashyap Bavadiya",
       email: "jayu@gmail.com"
     }
   },
@@ -83,7 +83,7 @@ export const posts = [
       },
       _id: "63d66c4166f6cab200624e72",
       username: "jayu",
-      name: "Jaivik goswami",
+      name: "Kashyap Bavadiya",
       email: "jayu@gmail.com"
     }
   },
@@ -105,7 +105,7 @@ export const posts = [
       },
       _id: "63d66c4166f6cab200624e72",
       username: "jayu",
-      name: "Jaivik goswami",
+      name: "Kashyap Bavadiya",
       email: "jayu@gmail.com"
     }
   },

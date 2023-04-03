@@ -35,7 +35,7 @@ function Following() {
           {followingTopics.map((topic) => {
             return (
               <Grid key={topic._id} item xs={4}>
-                <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer' }}>
+                <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer', paddingBottom:'6px' }}>
                   <CardMedia
                     component="img"
                     alt="Web Developement"
@@ -43,14 +43,14 @@ function Following() {
                     image={`/images/${topic.imgName}.jpg`}
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"}>
+                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"} sx={{fontSize:'16px'}}>
                       {topic.label}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" fontFamily={"inherit"}>
                       {topic.description}
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between', paddingX:'16px' }}>
                     <Button
                       id={topic._id}
                       tabIndex={topic._id}
@@ -69,14 +69,14 @@ function Following() {
             )
           })}
         </Grid>
-        <Typography variant='h5' fontFamily={"inherit"} fontWeight="500">
+        <Typography variant='h5' fontFamily={"inherit"} fontWeight="500" sx={{marginTop:'30px'}}>
           Suggested
         </Typography>
-        <Grid container component={'section'} marginTop={0.75} mb={2} columnSpacing={2} rowSpacing={2}>
+        <Grid container component={'section'} marginTop={0.75} mb={2} columnSpacing={1} rowSpacing={2}>
           {suggestedTopics.map((topic) => {
             return (
-              <Grid key={topic.label} item xs={4}>
-                <Card sx={{ width: "280px", border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer' }}>
+              <Grid key={topic._id} item xs={4}>
+                <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer', paddingBottom:'6px' }}>
                   <CardMedia
                     component="img"
                     alt="Web Developement"
@@ -84,14 +84,14 @@ function Following() {
                     image={`/images/${topic.imgName}.jpg`}
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"}>
+                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"} sx={{fontSize:'16px'}}>
                       {topic.label}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" fontFamily={"inherit"}>
                       {topic.description}
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between', paddingX:'16px'}}>
                     <Button
                       id={topic._id}
                       tabIndex={topic._id}
@@ -99,8 +99,9 @@ function Following() {
                       size="small"
                       variant={topic.following ? 'outlined' : 'contained'}
                       sx={{ textTransform: "none", fontFamily: "inherit" }}
-                      disableTouchRipple >
-                        {topic.following ? 'Following' : 'Follow'}
+                      disableTouchRipple
+                    >
+                      {topic.following ? 'Following' : 'Follow'}
                     </Button>
                     <Button size="small" sx={{ textTransform: "none", fontFamily: "inherit" }} >Learn More</Button>
                   </CardActions>
