@@ -5,7 +5,6 @@ const BASE_URL = "http://localhost:5000/api/v1";
 
 const signup = async (userData) => {
     const response = await axios.post(`${BASE_URL}/user/signup`, userData);
-    localStorage.setItem('user', JSON.stringify(response.data));
     return response.data;
 }
 

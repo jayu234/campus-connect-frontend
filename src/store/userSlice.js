@@ -71,7 +71,6 @@ const userSlice = createSlice({
       .addCase(userSignup.fulfilled, (state, action) => {
         state.isLoading = false
         state.success = true
-        state.user = action.payload
         state.isError = false
         state.message = ''
       })
