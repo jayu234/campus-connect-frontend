@@ -1,40 +1,55 @@
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Grid, TextField } from "@mui/material";
 import React from "react";
-import InputField from "../../FormFields/InputField";
+import { Field} from "formik";
 
-const interests = [
-  { label: "Web Developement", value: "Web Developement" },
-  { label: "App Development", value: "App Development" },
-  { label: "Data Science", value: "Data Science" },
-  { label: "Data Analyst", value: "Data Analyst" },
-  { label: "Quality Analyst", value: "Quality Analyst" },
-  { label: "Software Development", value: "Software Development" },
-  { label: "Machine Learning", value: "Machine Learning" },
-  { label: "Artificial intelligence", value: "Artificial intelligence" },
-  { label: "Python Programming", value: "Python Programming" },
-  { label: "React Developer", value: "React Developer" },
-  { label: "Laravel Developer", value: "Laravel Developer" },
+const interestsData = [
+  "Web Developement",
+  "App Development",
+  "Data Science",
+  "Data Analyst",
+  "Quality Analyst",
+  "Software Development",
+  "Machine Learning",
+  "Artificial intelligence",
+  "Python Programming",
+  "React Developer",
+  "Laravel Developer",
 ];
-
-function InterestDetails() {
+function InterestDetails(props) {
+  const {formField: { interests }} = props;
   return (
     <React.Fragment>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Autocomplete
-            multiple
-            id="interest"
-            name="interest"
-            options={interests}
-            renderInput={(params) => (
-              <InputField
-                {...params}
-                name="interest"
-                label="Area of interest *"
-                fullWidth
+          <Field name="interests">
+            {({ field, form }) => (
+              <Autocomplete
+                multiple
+                disableCloseOnSelect
+                options={interestsData}
+                getOptionLabel={(option) => option}
+                defaultValue={[]}
+                value={field.value}
+                onChange={(event, newValue) => {
+                  form.setFieldValue('interests', newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label={interests.label}
+                    error={
+                      form.touched.interests &&
+                      Boolean(form.errors.interests)
+                    }
+                    helperText={
+                      form.touched.interests && form.errors.interests
+                    }
+                  />
+                )}
               />
             )}
-          />
+          </Field>
         </Grid>
       </Grid>
     </React.Fragment>

@@ -1,19 +1,22 @@
 const styles = {
   root: {
     height: '100vh',
-    backgroundImage: `url("/images/signupBackground.jpg")`,
+    // backgroundImage: `url("/images/signupBackground.jpg")`,
+    backgroundColor: '#F8FAFC'
   },
   formContainer: {
     display: "flex",
     justifyContent: "center",
-    paddingTop: "1rem",
+    paddingTop: "5rem",
   },
   form: {
-    width: '800px',
+    width: '700px',
     marginX: 'auto',
     backgroundColor: '#fff',
     borderRadius: '10px',
-    padding: "1rem",
+    paddingY: "1rem",
+    paddingX: "0rem!important",
+    border: "1px solid #e2e8f0cc"
   }
 }
 

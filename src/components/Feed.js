@@ -110,11 +110,9 @@ function Feed() {
 				{[
 					webdevelopment.map((item) => {
 						return (
-							<>
-								<Box sx={{ marginBottom:'1rem' }}>
-									<PostItem key={item._id} post={item} />
-								</Box>
-							</>
+							<Box key={item._id} sx={{ marginBottom: '1rem' }}>
+								<PostItem key={item._id} post={item} />
+							</Box>
 						)
 					}),
 				]}

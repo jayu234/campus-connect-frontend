@@ -2,6 +2,7 @@ import { Grid, Autocomplete } from "@mui/material";
 import React from "react";
 import colleges from "../../../data/collegeName";
 import InputField from "../../FormFields/InputField";
+import { Field } from "formik";
 
 const courses = [
   { label: "Information Technology", value: "Information Technology" },
@@ -26,66 +27,99 @@ const cities = [
 function CollegeDetails(props) {
   const {
     formField: { college, course, city },
-    setFieldValue,
     values,
+    handleChange,
+    handleBlur,
   } = props;
-
   return (
     <React.Fragment>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Autocomplete
-            id="college"
-            name="college"
-            options={colleges}
-            onChange={(e, value) => {
-              setFieldValue("college", value ? value.value : "");
-            }}
-            renderInput={(params) => (
-              <InputField
-                {...params}
+          <Field name={college.name}>
+            {({ field }) => (
+              <Autocomplete
+                id="college"
                 name={college.name}
-                label={college.label}
-                fullWidth
+                options={colleges}
+                getOptionLabel={(option) => option.label}
+                value={colleges.find((option) => option.value === values.college )|| null}
+                onChange={(event, newValue) => {
+                  handleChange({
+                    target: { name: "college", value: newValue?.value || null },
+                  });
+                }}
+                onBlur={() => {
+                  handleBlur({ target: { name: "college" } });
+                }}
+                renderInput={(params) => (
+                  <InputField
+                    {...params}
+                    name={college.name}
+                    label={college.label}
+                    fullWidth
+                  />
+                )}
               />
             )}
-          />
+          </Field>
         </Grid>
         <Grid item xs={12}>
-          <Autocomplete
-            id="course"
-            name="course"
-            options={courses}
-            onChange={(e, value) => {
-              setFieldValue("course", value ? value.value : "");
-            }}
-            renderInput={(params) => (
-              <InputField
-                {...params}
+          <Field name={course.name}>
+            {({ field }) => (
+              <Autocomplete
+                id="course"
                 name={course.name}
-                label={course.label}
-                fullWidth
+                options={courses}
+                getOptionLabel={(option) => option.label}
+                value={courses.find((option) => option.value === values.course) || null}
+                onChange={(event, newValue) => {
+                  handleChange({
+                    target: { name: "course", value: newValue?.value || null },
+                  });
+                }}
+                onBlur={() => {
+                  handleBlur({ target: { name: "course" } });
+                }}
+                renderInput={(params) => (
+                  <InputField
+                    {...params}
+                    name={course.name}
+                    label={course.label}
+                    fullWidth
+                  />
+                )}
               />
             )}
-          />
+          </Field>
         </Grid>
         <Grid item xs={12}>
-          <Autocomplete
-            id="city"
-            name="city"
-            options={cities}
-            onChange={(e, value) => {
-              setFieldValue("city", value ? value.value : "");
-            }}
-            renderInput={(params) => (
-              <InputField
-                {...params}
-                name={city.name}
-                label={city.label}
-                fullWidth
+          <Field name={city.name}>
+            {({ field }) => (
+              <Autocomplete
+                id="city"
+                name="city"
+                options={cities}
+                getOptionLabel={(option) => option.label}
+                value={cities.find((option) => option.value === values.city) || null}
+                onChange={(event, newValue) => {
+                  handleChange({
+                    target: { name: "city", value: newValue?.value || null },
+                  });
+                }}
+                onBlur={() => {
+                  handleBlur({ target: { name: "city" } });
+                }}
+                renderInput={(params) => (
+                  <InputField
+                    {...params}
+                    name={city.name}
+                    label={city.label}
+                    fullWidth
+                  />
+                )}
               />
             )}
-          />
+          </Field>
         </Grid>
       </Grid>
     </React.Fragment>

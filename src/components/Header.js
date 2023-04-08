@@ -25,12 +25,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications"
 
 import { styled } from "@mui/material/styles"
 import MainModal from "./MainModal"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { NavLink } from "react-router-dom"
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
 import { color } from "@mui/system"
-
+import { useDispatch } from "react-redux"
+import { userLogout } from "../store/userSlice"
 const CustomWidthTooltip = styled(({ className, ...props }) => (
 	<Tooltip {...props} classes={{ popper: className }} />
 ))({
@@ -41,33 +42,12 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
 	},
 })
 
-const iconBtns = [
-	{
-		name: "Home",
-		icon: <HomeIcon sx={{ fontSize: 30 }} />,
-		link: "/",
-	},
-	{
-		name: "Following",
-		icon: <SpeakerNotesIcon sx={{ fontSize: 30 }} />,
-		link: "following",
-	},
-	{
-		name: "Answer",
-		icon: <QuestionAnswerIcon sx={{ fontSize: 30 }} />,
-		link: "answer",
-	},
-	{
-		name: "Events",
-		icon: <EmojiEventsIcon sx={{ fontSize: 30 }} />,
-		link: "events",
-	},
-]
+
 const settings = ["Profile", "Edit profile", "Logout"]
 
-function Header() {
+function Navbar() {
 	const [anchorElUser, setAnchorElUser] = React.useState(null)
-
+	const dispatch = useDispatch();
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
@@ -75,13 +55,48 @@ function Header() {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
-	const handleAction = (setting) =>{
-		if(setting === "Profile"){
+	const handleAction = (setting) => {
+		if (setting === "Profile") {
 			navigate("/profile");
+		}
+		if(setting === "Logout"){
+			dispatch(userLogout());
 		}
 		handleCloseUserMenu();
 	}
 	const [open, setOpen] = React.useState(false);
+	const currPage = useLocation().pathname;
+	const isHomePage = currPage === "/";
+	const isFollowingPage = currPage === "/following";
+	const isAnswerPage = currPage === "/answer";
+	const isEventsPage = currPage === "/events";
+
+	const iconBtns = [
+		{
+			name: "Home",
+			icon: <HomeIcon sx={{ fontSize: 30 }} color={isHomePage ? 'primary' : '#757575'} />,
+			link: "/",
+			pageLabel: "/"
+		},
+		{
+			name: "Following",
+			icon: <SpeakerNotesIcon sx={{ fontSize: 30 }} color={isFollowingPage ? 'primary' : '#757575'} />,
+			link: "following",
+			pageLabel: "/following"
+		},
+		{
+			name: "Answer",
+			icon: <QuestionAnswerIcon sx={{ fontSize: 30 }} color={isAnswerPage ? 'primary' : '#757575'} />,
+			link: "answer",
+			pageLabel: "/answer"
+		},
+		{
+			name: "Events",
+			icon: <EmojiEventsIcon sx={{ fontSize: 30 }} color={isEventsPage ? 'primary' : '#757575'} />,
+			link: "events",
+			pageLabel: "/events"
+		},
+	]
 	return (
 		<>
 			{open && <MainModal open={open} tabInd={0} setOpen={setOpen} />}
@@ -137,23 +152,22 @@ function Header() {
 						<Box sx={{ flexGrow: 1 }}>
 							{iconBtns.map((item) => {
 								return (
-									<>
-										<CustomWidthTooltip
-											key={item.name}
-											title={item.name}
-											TransitionComponent={Zoom}
+									<CustomWidthTooltip
+										key={item.name}
+										title={item.name}
+										TransitionComponent={Zoom}
+									>
+										<IconButton
+											disableTouchRipple
+											onClick={() => {
+												navigate(`${item.link}`)
+											}}
+											color="#fff"
+											sx={{ marginX: "0.7rem", borderRadius: '5px', ":hover": { backgroundColor: '#F1F5F9' } }}
 										>
-											<IconButton
-												onClick={() => {
-													navigate(`${item.link}`)
-												}}
-												color="#fff"
-												sx={{ marginX: "0.7rem" }}
-											>
-												{item.icon}
-											</IconButton>
-										</CustomWidthTooltip>
-									</>
+											{item.icon}
+										</IconButton>
+									</CustomWidthTooltip>
 								)
 							})}
 						</Box>
@@ -204,7 +218,7 @@ function Header() {
 								onClose={handleCloseUserMenu}
 							>
 								{settings.map((setting) => (
-									<MenuItem key={setting} onClick={()=>{handleAction(setting)}}>
+									<MenuItem key={setting} onClick={() => { handleAction(setting) }}>
 										<Typography textAlign="center">{setting}</Typography>
 									</MenuItem>
 								))}
@@ -216,4 +230,4 @@ function Header() {
 		</>
 	)
 }
-export default Header
+export default Navbar

@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import ShareIcon from "@mui/icons-material/Share"
 import { Box } from "@mui/system"
 import { answers } from "../data/answers"
+import { useNavigate } from "react-router"
 
 
 const months = [
@@ -53,6 +54,7 @@ function AnswerPost({ item }) {
 	const [open, setOpen] = React.useState(false)
 
     const date = new Date(item.createdAt)
+	const navigate = useNavigate();
 	return (
 		<>
 			<Card
@@ -63,7 +65,9 @@ function AnswerPost({ item }) {
 					display: "flex",
 					flexDirection: "column",
 					boxShadow: "none",
+					cursor: 'pointer'
 				}}
+				onClick={()=>{navigate("/question")}}
 			>
 				<CardHeader
 					avatar={

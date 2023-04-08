@@ -7,21 +7,24 @@ import {
   Typography,
   CircularProgress,
   Grid,
+  Stack,
+  Snackbar
 } from "@mui/material";
+import MuiAlert from '@mui/material/Alert';
 import { Formik, Form } from "formik";
 
 import PersonalDetails from "./Forms/PersonalDetails";
 import CollegeDetails from "./Forms/CollegeDetails";
 import Credentials from "./Forms/Credentials";
 import InterestDetails from "./Forms/InterestDetails";
-import SignupSuccess from "./SignupSuccess";
 
 import validationSchema from "./FormModel/validationSchema";
 import model from "./FormModel/model";
 import initialValues from "./FormModel/initialValues";
 
-import { useDispatch } from "react-redux"
-import { userSignup } from "../../store/userSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { userSignup } from "../../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   "Personal Details",
@@ -31,40 +34,63 @@ const steps = [
 ];
 const { formId, formField } = model;
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+const vertical = 'bottom', horizontal = 'center';
+
+
 export default function SignupForm() {
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const [alertMessage, setAlertMessage] = React.useState("");
+	const [open, setOpen] = React.useState(false);
+  const {user, success, isError, isLoading, message } = useSelector((state) => state.user);
 
   function _sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-  const _renderStepContent = (step, setFieldValue, values)=>{
+  const _renderStepContent = (
+    step,
+    setFieldValue,
+    values,
+    handleChange,
+    handleBlur
+  ) => {
     switch (step) {
       case 0:
         return <PersonalDetails formField={formField} />;
       case 1:
         return <Credentials formField={formField} />;
       case 2:
-        return <CollegeDetails formField={formField} setFieldValue={setFieldValue} values={values} />;
+        return (
+          <CollegeDetails
+            formField={formField}
+            setFieldValue={setFieldValue}
+            values={values}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+          />
+        );
       case 3:
-        return <InterestDetails/>;
+        return <InterestDetails formField={formField} values={values} />;
       default:
         return <div>Not Found</div>;
     }
-  }
+  };
   async function _submitForm(values, actions) {
     dispatch(userSignup(values));
-    actions.setSubmitting(false);
-
-    setActiveStep(activeStep + 1);
+    // await _sleep(2000);
+    // actions.setSubmitting(false);
   }
 
   function _handleSubmit(values, actions) {
     if (isLastStep) {
-      console.log({...values, interest: ["Web Developement", "App Development", "Data Science"]});
-      _submitForm({...values, interest: ["Web Developement", "App Development", "Data Science"]}, actions);
+      console.log(values);
+      _submitForm(values, actions);
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -75,64 +101,116 @@ export default function SignupForm() {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
+  const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
 
+		setOpen(false);
+	};
+	// React.useEffect(() => {
+	// 	if (user) {
+	// 		navigate("/");
+	// 	}
+	// }, []);
+	React.useEffect(() => {
+		if (isError) {
+			setAlertMessage(message);
+			setOpen(true);
+		}
+    if (user && success) {
+      setAlertMessage("Signned up successfully!!");
+      setOpen(true);
+      setTimeout(()=>{
+        navigate("/login")
+      },2000)
+		}
+	}, [isLoading])
   return (
     <React.Fragment>
-      <Typography component="h1" variant="h4" align="center">
-        Signup
-      </Typography>
-      <Grid container sx={{display: 'flex', justifyContent: 'center', alignItems: 'flex-start'  , marginTop: '1.5rem' }}>
-        <Grid component={"aside"} item xs={3}>
-          <Stepper activeStep={activeStep} orientation="vertical">
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          marginTop: "1.5rem",
+        }}
+      >
+        <Grid item xs={10} sx={{ marginBottom: "1.5rem" }}>
+          <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel>
+                  <Typography variant="body2" fontFamily="'Inter', sans-serif">
+                    {label}
+                  </Typography>
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
         </Grid>
         <Grid item xs={9}>
           <React.Fragment>
-            {activeStep === steps.length ? (
-              <SignupSuccess />
-            ) : (
               <Formik
                 initialValues={initialValues}
                 validationSchema={currentValidationSchema}
                 onSubmit={_handleSubmit}
               >
-                {({ isSubmitting, setFieldValue, values }) => (
+                {({
+                  setFieldValue,
+                  values,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                }) => (
                   <Form id={formId}>
-                    {_renderStepContent(activeStep, setFieldValue, values)}
+                    {_renderStepContent(
+                      activeStep,
+                      setFieldValue,
+                      values,
+                      handleChange,
+                      handleBlur,
+                    )}
 
                     <div
                       style={{ display: "flex", justifyContent: "flex-end" }}
                     >
                       {activeStep !== 0 && (
                         <Button
+                          disableTouchRipple
                           onClick={_handleBack}
-                          sx={{ marginTop: "24px", marginLeft: "8px" }}
+                          sx={{
+                            marginTop: "24px",
+                            marginLeft: "8px",
+                            textTransform: "none",
+                          }}
                         >
-                          Back
+                          {" "}
+                          Back{" "}
                         </Button>
                       )}
-                      <div style={{ margin: "8px" }}>
+                      <div style={{ margin: "8px", position: "relative" }}>
                         <Button
-                          disabled={isSubmitting}
+                          disabled={isLoading}
                           type="submit"
                           variant="contained"
                           color="primary"
-                          sx={{ marginTop: "24px", marginLeft: "8px" }}
+                          sx={{
+                            marginTop: "24px",
+                            marginLeft: "8px",
+                            textTransform: "none",
+                          }}
                         >
                           {isLastStep ? "Sign up" : "Next"}
                         </Button>
-                        {isSubmitting && (
+                        {isLoading && (
                           <CircularProgress
                             size={24}
                             sx={{
                               position: "absolute",
-                              top: "50%",
-                              left: "50%",
+                              bottom: "10%",
+                              right: "30%",
                             }}
                           />
                         )}
@@ -141,10 +219,22 @@ export default function SignupForm() {
                   </Form>
                 )}
               </Formik>
-            )}
           </React.Fragment>
         </Grid>
       </Grid>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+				<Snackbar
+					open={open}
+					anchorOrigin={{ vertical, horizontal }}
+					key={vertical + horizontal}
+					autoHideDuration={2000}
+					onClose={handleClose}
+				>
+					<Alert onClose={handleClose} severity={isError ? "error" : "success"} sx={{ width: '100%' }}>
+						{alertMessage}
+					</Alert>
+				</Snackbar>
+			</Stack>
     </React.Fragment>
   );
 }

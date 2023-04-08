@@ -83,7 +83,7 @@ export default function PostItem({ post }) {
 					height: 500,
 					width: 1000,
 					maxHeight: { xs: 400, md: 1000 },
-					maxWidth: { xs: 400, md: 795 },
+					maxWidth: { xs: 400, md: 862 },
 				}}
 				alt="The house from the offer."
 				src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"

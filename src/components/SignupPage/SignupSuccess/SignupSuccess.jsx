@@ -15,7 +15,7 @@ function SignupSuccess() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography fontSize={24}>
-            Signned up successfully!!
+            Redirecting...
           </Typography>
         </Grid>
       </Grid>

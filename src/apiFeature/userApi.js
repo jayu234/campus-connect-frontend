@@ -11,15 +11,18 @@ const signup = async (userData) => {
 const login = async (userData) => {
     axios.defaults.withCredentials = true;
     const response = await axios.post(`${BASE_URL}/user/login`, userData, { withCredentials: true });
-    localStorage.setItem('user', JSON.stringify(response.data));
     return response.data;
 }
 
 const logout = async () => {
-    const response = await axios.get(`${BASE_URL}/user/logout`);
-    localStorage.removeItem('user');
+    const response = await axios.post(`${BASE_URL}/user/logout`, { withCredentials: true });
     return response.data;
 }
-const authServise = { signup, login, logout };
+
+const loadUser = async () => {
+    const response = await axios.get(`${BASE_URL}/user/profile`, { withCredentials: true });
+    return response.data;
+}
+const authServise = { signup, login, logout, loadUser };
 
 export default authServise;

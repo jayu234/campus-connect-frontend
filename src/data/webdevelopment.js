@@ -1,28 +1,5 @@
 export const webdevelopment = [
 	{
-		likes: 10,
-		_id: "63f875a4df01104d549c0e72",
-		title: "A Tale of Algorithms: Edit Distance in Web Development",
-		content:
-			"Two years ago, I was working on a delivery app. Our client wanted to create a system that could manage users ordering products, and service providers would register on the app to sell their products. Sounds easy, right? In this article, I will tell you the story of how I got to implement a cool Dynamic Programming algorithm to satisfy the requirements of a not so experienced Project Manager. Keep reading until the end; I assure you it will be educational and fun. Let's go!",
-		tags: ["event"],
-		location: "VV Nager, Anand",
-		edited: false,
-		createdAt: "2023-02-24T08:28:17.015Z",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z1",
-			_id: "63d66c4166f6cab200624e72",
-			username: "kashCryst3l",
-			name: "Kashyap Bavadiya",
-			email: "bavadiyakashyap@gmail.com",
-		},
-	},
-	{
 		likes: 60,
 		_id: "63f875a4df01104d549c0e73",
 		title: "The missing piece in Chrome DevTools",
@@ -43,6 +20,29 @@ export const webdevelopment = [
 			username: "jayu",
 			name: "Jaivik goswami",
 			email: "jayu@gmail.com",
+		},
+	},
+	{
+		likes: 10,
+		_id: "63f875a4df01104d549c0e72",
+		title: "A Tale of Algorithms: Edit Distance in Web Development",
+		content:
+			"Two years ago, I was working on a delivery app. Our client wanted to create a system that could manage users ordering products, and service providers would register on the app to sell their products. Sounds easy, right? In this article, I will tell you the story of how I got to implement a cool Dynamic Programming algorithm to satisfy the requirements of a not so experienced Project Manager. Keep reading until the end; I assure you it will be educational and fun. Let's go!",
+		tags: ["event"],
+		location: "VV Nager, Anand",
+		edited: false,
+		createdAt: "2023-02-24T08:28:17.015Z",
+		images: [],
+		author: {
+			avatar: {
+				public_id: "654120",
+				url: "https://www.google.com",
+			},
+			imgName: "z1",
+			_id: "63d66c4166f6cab200624e72",
+			username: "kashCryst3l",
+			name: "Kashyap Bavadiya",
+			email: "bavadiyakashyap@gmail.com",
 		},
 	},
 	{

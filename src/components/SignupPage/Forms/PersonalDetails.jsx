@@ -24,7 +24,6 @@ function PersonalDetails(props) {
   } = props;
   const [selectedImage, setSelectedImage] = useState(null)
 	const [imageUrl, setImageUrl] = useState(null)
-
 	useEffect(() => {
 		if (selectedImage) {
 			setImageUrl(URL.createObjectURL(selectedImage))
@@ -33,44 +32,7 @@ function PersonalDetails(props) {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          sx={{
-            height: "7rem",
-            display: "flex",
-            alignItems: "end",
-            justifyContent: "center",
-            paddingBottom: "1rem",
-          }}
-        >
-          <input
-            accept="image/*"
-            type="file"
-            id="select-image"
-            style={{ display: "none" }}
-            onChange={(e) => setSelectedImage(e.target.files[0])}
-          />
-          <label htmlFor="select-image">
-            <Button variant="contained" color="primary" component="span">
-              Upload Image
-            </Button>
-          </label>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          {imageUrl && selectedImage && (
-            <Box textAlign="" marginTop={3}>
-              <img
-                src={imageUrl}
-                alt={selectedImage.name}
-                width="100rem"
-                height="100rem"
-              />
-            </Box>
-          )}
-        </Grid>
+      <Grid container spacing={3} >
         <Grid item xs={12} sm={6}>
           <InputField name={firstName.name} label={firstName.label} fullWidth />
         </Grid>

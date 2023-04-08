@@ -13,6 +13,7 @@ const {
     confirmPassword,
     college,
     course,
+    interests
   }
 } = model;
 
@@ -29,4 +30,5 @@ export default {
   [confirmPassword.name]: '',
   [college.name]: '',
   [course.name]: '',
+  [interests.name]: []
 };

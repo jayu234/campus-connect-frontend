@@ -7,14 +7,6 @@ import RightSidebar from './RightSidebar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 function Home() {
-
-    const { user } = useSelector((state) => state.user);
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (!user) {
-            navigate("/login");
-        }
-    }, [])
     return (
         <>
             <Header />
