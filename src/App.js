@@ -11,6 +11,7 @@ import Answer from "./components/Answer"
 import Events from "./components/Events"
 import Topic from "./components/Topic"
 import AnswerPage from "./components/AnswerPage"
+import EventPage from "./components/EventPage"
 import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from "./store/userSlice"
 
@@ -31,6 +32,7 @@ function App() {
 					<Route exact path="/topic" element={<Topic />} />
 				</Route>
 				<Route exact path="/question" element={<AnswerPage />} />
+				<Route exact path="/oneevent" element={<EventPage />} />
 				{/* <Route exact path="/login" element={<Login />} /> */}
 				<Route exact path="/signup" element={<Signup />} />
 				<Route exact path="/profile" element={<Profile />} />
