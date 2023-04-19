@@ -14,11 +14,12 @@ import EditIcon from "@mui/icons-material/Edit"
 import ShareIcon from "@mui/icons-material/Share"
 import { Box } from "@mui/system"
 import ProfileQuestionModal from "./ProfileQuestionModal"
-import { questionanswer } from "../data/questionanswer"
 import AnswerPageComponent from "./AnswerPageComponent"
+import { useSelector } from "react-redux"
 
-function AnswerPageRightSidebar() {
-	const [open, setOpen] = React.useState(false)
+function AnswerPageRightSidebar({ data }) {
+	const [open, setOpen] = React.useState(false);
+	const { loadUser: { data: { firstName } } } = useSelector((state) => state.user);
 	return (
 		<>
 			{open && (
@@ -41,7 +42,7 @@ function AnswerPageRightSidebar() {
 							fontWeight: "500",
 						}}
 					>
-						What is the full form of GPT in chatGPT?
+						{data.content}
 					</Box>
 					<Box
 						sx={{
@@ -51,7 +52,7 @@ function AnswerPageRightSidebar() {
 						}}
 					>
 						<Avatar
-							src={`/images/z1.jpg`}
+							src={data.author.avatar.url}
 							aria-label="recipe"
 							sx={{ width: "3rem", height: "3rem" }}
 						/>
@@ -64,7 +65,7 @@ function AnswerPageRightSidebar() {
 							fontWeight: "400",
 						}}
 					>
-						Kashyap, can you answer this question?
+						{firstName}, can you answer this question?
 					</Box>
 					<Box
 						sx={{
@@ -101,11 +102,8 @@ function AnswerPageRightSidebar() {
 				</Box>
 
 				<Box>
-					{questionanswer.map((qa) => {
-						return <>
-						<AnswerPageComponent post={qa} />
-						</>
-					})}
+					{data.answers.length > 0 ? data.answers.map((qa, index) => { return <AnswerPageComponent key={index} post={qa} />
+					}) : <Typography align="center" mt={4} fontFamily={'inherit'}>Not answerd yet.</Typography>}
 				</Box>
 			</Box>
 		</>

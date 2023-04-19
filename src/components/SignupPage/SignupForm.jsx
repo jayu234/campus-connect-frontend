@@ -24,6 +24,7 @@ import initialValues from "./FormModel/initialValues";
 
 import { useDispatch, useSelector } from "react-redux";
 import { userSignup } from "../../store/userSlice";
+import { getAllTopics } from "../../store/topicSlice";
 import { useNavigate } from "react-router-dom";
 
 const steps = [
@@ -48,8 +49,9 @@ export default function SignupForm() {
 	const navigate = useNavigate();
 	const [alertMessage, setAlertMessage] = React.useState("");
 	const [open, setOpen] = React.useState(false);
-  const {user, success, isError, isLoading, message } = useSelector((state) => state.user);
-
+  const {user, success, isError, isLoading, message } = useSelector((state) => state.user.signup);
+  const { allTopics} = useSelector((state) => state.topic);
+  const [interestsData, setInterestsData] = useState([]);
   function _sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -76,7 +78,7 @@ export default function SignupForm() {
           />
         );
       case 3:
-        return <InterestDetails formField={formField} values={values} />;
+        return <InterestDetails formField={formField} values={values} data={interestsData}/>;
       default:
         return <div>Not Found</div>;
     }
@@ -108,11 +110,18 @@ export default function SignupForm() {
 
 		setOpen(false);
 	};
-	// React.useEffect(() => {
-	// 	if (user) {
-	// 		navigate("/");
-	// 	}
-	// }, []);
+	React.useEffect(() => {
+		dispatch(getAllTopics())
+	}, [dispatch]);
+  React.useEffect(()=>{
+    if(allTopics.success){
+      const temp = allTopics.data?.map((item)=>{return {_id: item._id, label: item.label}})
+      setInterestsData(temp);
+    }
+    if(allTopics.isError){
+      setInterestsData([])
+    }
+  },[allTopics.isLoading])
 	React.useEffect(() => {
 		if (isError) {
 			setAlertMessage(message);
@@ -122,7 +131,7 @@ export default function SignupForm() {
       setAlertMessage("Signned up successfully!!");
       setOpen(true);
       setTimeout(()=>{
-        navigate("/login")
+        navigate("/")
       },2000)
 		}
 	}, [isLoading])

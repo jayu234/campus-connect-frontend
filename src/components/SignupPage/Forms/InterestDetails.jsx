@@ -1,22 +1,10 @@
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import React from "react";
-import { Field} from "formik";
+import { Field } from "formik";
+import { useSelector } from "react-redux";
 
-const interestsData = [
-  "Web Developement",
-  "App Development",
-  "Data Science",
-  "Data Analyst",
-  "Quality Analyst",
-  "Software Development",
-  "Machine Learning",
-  "Artificial intelligence",
-  "Python Programming",
-  "React Developer",
-  "Laravel Developer",
-];
 function InterestDetails(props) {
-  const {formField: { interests }} = props;
+  const { formField: { interests }, data} = props;
   return (
     <React.Fragment>
       <Grid container spacing={3}>
@@ -26,12 +14,12 @@ function InterestDetails(props) {
               <Autocomplete
                 multiple
                 disableCloseOnSelect
-                options={interestsData}
-                getOptionLabel={(option) => option}
-                defaultValue={[]}
+                options={data}
+                getOptionLabel={(option) => option.label}
                 value={field.value}
+                defaultValue={[{}]}
                 onChange={(event, newValue) => {
-                  form.setFieldValue('interests', newValue);
+                  form.setFieldValue("interests", newValue);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -39,12 +27,9 @@ function InterestDetails(props) {
                     variant="outlined"
                     label={interests.label}
                     error={
-                      form.touched.interests &&
-                      Boolean(form.errors.interests)
+                      form.touched.interests && Boolean(form.errors.interests)
                     }
-                    helperText={
-                      form.touched.interests && form.errors.interests
-                    }
+                    helperText={form.touched.interests && form.errors.interests}
                   />
                 )}
               />

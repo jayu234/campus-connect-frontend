@@ -29,10 +29,11 @@ function App() {
 					<Route exact path="/following" element={<Following />} />
 					<Route exact path="/answer" element={<Answer />} />
 					<Route exact path="/events" element={<Events />} />
-					<Route exact path="/topic" element={<Topic />} />
+					<Route exact path="/topic/:id" element={<Topic />} />
 				</Route>
 				<Route exact path="/question" element={<AnswerPage />} />
 				<Route exact path="/oneevent" element={<EventPage />} />
+				<Route exact path="/question/:id" element={<AnswerPage />} />
 				{/* <Route exact path="/login" element={<Login />} /> */}
 				<Route exact path="/signup" element={<Signup />} />
 				<Route exact path="/profile" element={<Profile />} />

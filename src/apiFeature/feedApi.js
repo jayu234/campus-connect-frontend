@@ -6,6 +6,14 @@ const getFeedData = async () => {
     const response = await axios.get(`${BASE_URL}/feed`);
     return response.data;
 }
-const feedService = { getFeedData };
+const getAllTopics = async()=>{
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/topic/all`, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response.data;
+}
+const feedService = { getFeedData, getAllTopics };
 
 export default feedService;

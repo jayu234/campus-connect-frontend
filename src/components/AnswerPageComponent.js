@@ -44,7 +44,7 @@ function AnswerPageComponent({ post }) {
 
 	const date = new Date(post.createdAt)
 	return (
-		<>
+		<React.Fragment>
 			<Card
 				sx={{
 					marginTop: "1rem",
@@ -114,13 +114,13 @@ function AnswerPageComponent({ post }) {
 							}}
 							startIcon={<BsHeart size={23} />}
 						>
-							{post.likes > 0 && post.likes}
+							{post.likes.length > 0 && post.likes.length}
 						</Button>
 					</Box>
 				</CardActions>
 				<Divider />
 			</Card>
-		</>
+		</React.Fragment>
 	)
 }
 

@@ -1,45 +1,49 @@
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography, Divider } from '@mui/material'
-import React from 'react'
-import { posts } from '../data/posts'
+import React, { useEffect, useState } from 'react'
+import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNearbyEvents } from '../store/eventSlice';
 
 function RightSidebar() {
-  const events = posts.filter((item) => item.tags.includes("event") || item.tags.includes("competition"))
+  const { nearbyEvents: { data, success, isLoading, isError } } = useSelector((state) => state.event);
+  const [eventData, setEventData] = useState([]);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setMessage("Loading...");
+    dispatch(getNearbyEvents());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      setEventData(data);
+      setMessage("");
+      if (data.length === 0) {
+        setMessage("No data to display.")
+      }
+    }
+    if (isError) {
+      setMessage("No data to display.")
+      setEventData([]);
+    }
+  }, [isLoading])
   return (
     <Box sx={{ backgroundColor: '#fff', border: '1px solid #e2e8f0cc', borderRadius: "0.5rem", paddingY: "0.5rem", paddingX: "1rem" }}>
       <Typography variant='h6' fontFamily="inherit" fontWeight={600}>Events & Competition</Typography>
-      <Box>
-        <List>
-          {/* {events.map((item) => {
+      <List>
+        <React.Fragment>
+          {eventData.length > 0 ? eventData.map((item) => {
             return (
-              <div key={item._id}>
-                <ListItem sx={{cursor: "pointer", marginY: "0.5rem", borderRadius: "10px",":hover": { backgroundColor: "#E2E8F0" }}}>
-                  <ListItemAvatar><Avatar src='/images/event.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-                  <ListItemText primary={item.title} primaryTypographyProps={{ fontFamily: "inherit" }} />
-                </ListItem>
-              </div>
+              <ListItem key={item._id} sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
+                <ListItemAvatar><Avatar alt={item.title+'_cover'} src={item.image.url} sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
+                <ListItemText primary={item.title} primaryTypographyProps={{ fontFamily: "inherit" }} />
+              </ListItem>
             )
-          })} */}
-          <ListItem sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
-            <ListItemAvatar><Avatar src='/images/event1.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-            <ListItemText primary={"Udaan - BVM Cultural Festival"} primaryTypographyProps={{ fontFamily: "inherit" }} />
-          </ListItem>
-          <Divider/>
-          <ListItem sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
-            <ListItemAvatar><Avatar src='/images/event2.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-            <ListItemText primary={"CodeRatri"} primaryTypographyProps={{ fontFamily: "inherit" }} />
-          </ListItem>
-          <Divider/>
-          <ListItem sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
-            <ListItemAvatar><Avatar src='/images/event3.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-            <ListItemText primary={"Genisis - BVM Tech Festival"} primaryTypographyProps={{ fontFamily: "inherit" }} />
-          </ListItem>
-          <Divider/>
-          <ListItem sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
-            <ListItemAvatar><Avatar src='/images/event1.jpg' sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
-            <ListItemText primary={"Spectrum - ADIT Annual Fest"} primaryTypographyProps={{ fontFamily: "inherit" }} />
-          </ListItem>
-        </List>
-      </Box>
+          }) : <Typography variant='body2' fontFamily={'inherit'} align={'center'} >{message}</Typography>}
+        </React.Fragment>
+      </List>
     </Box >
   )
 }
