@@ -1,14 +1,16 @@
 import React from "react"
-import { Grid, Box, Divider } from "@mui/material"
+import { Grid, Box, Divider, Typography, Button } from "@mui/material"
 import SchoolTwoToneIcon from "@mui/icons-material/SchoolTwoTone"
 import PlaceTwoToneIcon from "@mui/icons-material/PlaceTwoTone"
 import WorkspacePremiumTwoToneIcon from "@mui/icons-material/WorkspacePremiumTwoTone"
-import { BsGithub, BsLinkedin } from "react-icons/bs"
+import { BsGithub, BsLinkedin, BsTwitter } from "react-icons/bs"
 import { FaInstagram } from "react-icons/fa"
 import Link from "@mui/material/Link"
 import { skills } from "../data/skills"
+import { useSelector } from "react-redux"
 
 function ProfileLeftSidebar() {
+	const { loadUser: { data: { avatar, city, username, firstName, lastName, college, course, skills } } } = useSelector((state) => state.user);
 	return (
 		<>
 			<Box sx={{ paddingX: "1rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
@@ -20,18 +22,18 @@ function ProfileLeftSidebar() {
 								height: "5.5rem",
 								borderRadius: "1rem",
 							}}
-							src="/images/z1.jpg"
-							alt="Welcome to our website"
+							src={avatar.url}
+							alt={"user_profile_avatar"}
 						/>
 					</Grid>
 					<Grid item xs={7.5} sx={{ marginTop: "0.3rem" }}>
 						<Box>
-							<strong>Kashyap Bavadiya</strong>
+							<strong>{firstName + " " + lastName}</strong>
 						</Box>
-						<Box sx={{ fontSize: "14px" }}>kashyapmb</Box>
+						<Box sx={{ fontSize: "14px" }}>{username}</Box>
 					</Grid>
 				</Grid>
-				<Box
+				{/* {bio.length > 0 && <Box
 					sx={{
 						marginTop: "0.6rem",
 						marginLeft: "0.1rem",
@@ -39,10 +41,17 @@ function ProfileLeftSidebar() {
 						lineHeight: "24px",
 					}}
 				>
-					Hi, I am a Third Year Information Technology undergraduate student at
-					Birla Vishvakarma Mahavidyalaya.]
-				</Box>
+					{bio}
+				</Box>} */}
 				<Box sx={{ fontSize: "13px" }}>
+					<Box
+						sx={{ marginTop: "0.6rem", display: "flex", alignItems: "center" }}
+					>
+						<SchoolTwoToneIcon sx={{ color: "blue", fontSize: "1.3rem" }} />
+						<Box sx={{ marginLeft: "0.3rem" }}>
+							{college}
+						</Box>
+					</Box>
 					<Box
 						sx={{ marginTop: "0.6rem", display: "flex", alignItems: "center" }}
 					>
@@ -50,22 +59,14 @@ function ProfileLeftSidebar() {
 							sx={{ color: "blue", fontSize: "1.3rem" }}
 						/>
 						<Box sx={{ marginLeft: "0.3rem" }}>
-							BTech - Information Technology
-						</Box>
-					</Box>
-					<Box
-						sx={{ marginTop: "0.6rem", display: "flex", alignItems: "center" }}
-					>
-						<SchoolTwoToneIcon sx={{ color: "blue", fontSize: "1.3rem" }} />
-						<Box sx={{ marginLeft: "0.3rem" }}>
-							Birla Vishvarkarma Mahavidyalay
+							{course}
 						</Box>
 					</Box>
 					<Box
 						sx={{ marginTop: "0.6rem", display: "flex", alignItems: "center" }}
 					>
 						<PlaceTwoToneIcon sx={{ color: "blue", fontSize: "1.3rem" }} />
-						<Box sx={{ marginLeft: "0.3rem" }}>Anand, gujarat</Box>
+						<Box sx={{ marginLeft: "0.3rem" }}>{city.label}</Box>
 					</Box>
 				</Box>
 
@@ -75,7 +76,7 @@ function ProfileLeftSidebar() {
 						<strong>Links</strong>
 					</Box>
 					<Box sx={{ fontSize: "13px", paddingLeft: "0.2rem" }}>
-						<Box
+						{<Box
 							sx={{
 								marginTop: "0.7rem",
 								display: "flex",
@@ -90,7 +91,7 @@ function ProfileLeftSidebar() {
 							>
 								{"kashyapmb"}
 							</Link>
-						</Box>
+						</Box>}
 						<Box
 							sx={{
 								marginTop: "1rem",
@@ -114,7 +115,7 @@ function ProfileLeftSidebar() {
 								alignItems: "center",
 							}}
 						>
-							<FaInstagram size={16} />
+							<BsTwitter size={16} />
 							<Link
 								href="https://www.instagram.com/kashyapbavadiya/"
 								underline="hover"
@@ -124,6 +125,10 @@ function ProfileLeftSidebar() {
 							</Link>
 						</Box>
 					</Box>
+					{/* <Box mt={2} sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+						<Typography variant="caption" align="center" fontFamily={'inherit'}>You haven't added any links to your profile</Typography>
+						<Button variant="text" sx={{marginTop: "0.25rem",paddingY: "0.10rem" , fontSize: "0.75rem" ,textTransform: 'none'}}>+ Add one</Button>
+					</Box> */}
 				</Box>
 
 				{/* <Divider orientation="horizontal" flexItem sx={{ marginY: "1rem" }} /> */}
@@ -131,17 +136,12 @@ function ProfileLeftSidebar() {
 					<Box>
 						<strong>Skills</strong>
 					</Box>
-					<Box sx={{ marginTop: "0.5rem", paddingLeft:'0.3rem', lineHeight:'1.3rem' }}>
+					<Box sx={{ marginTop: "0.5rem", paddingLeft: '0.3rem', lineHeight: '1.3rem' }}>
 						{skills.map((item) => {
 							return (
-								<Box
-									sx={{
-										fontSize: "14px",
-										backgroundColor: "#f8fafc",
-									}}
-								>
-									{item.skill}
-								</Box>
+								<Typography fontFamily={'inherit'} fontSize={'14px'}>
+									{item}
+								</Typography>
 							)
 						})}
 					</Box>

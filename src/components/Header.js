@@ -30,7 +30,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { NavLink } from "react-router-dom"
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
 import { color } from "@mui/system"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { userLogout } from "../store/userSlice"
 const CustomWidthTooltip = styled(({ className, ...props }) => (
 	<Tooltip {...props} classes={{ popper: className }} />
@@ -48,6 +48,7 @@ const settings = ["Profile", "Edit profile", "Logout"]
 function Navbar() {
 	const [anchorElUser, setAnchorElUser] = React.useState(null)
 	const dispatch = useDispatch();
+	const {loadUser: { data: {avatar} }} = useSelector((state)=>state.user);
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
@@ -199,7 +200,7 @@ function Navbar() {
 								<NotificationsIcon />
 							</IconButton>
 							<IconButton onClick={handleOpenUserMenu}>
-								<Avatar alt="Profile pic" src="/images/avatar.png" />
+								<Avatar alt="Profile pic" src={avatar?.url} />
 							</IconButton>
 							<Menu
 								sx={{ mt: "45px" }}

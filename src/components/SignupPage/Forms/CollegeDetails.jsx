@@ -3,6 +3,7 @@ import React from "react";
 import colleges from "../../../data/collegeName";
 import InputField from "../../FormFields/InputField";
 import { Field } from "formik";
+import cities from "../../../data/cities";
 
 const courses = [
   { label: "Information Technology", value: "Information Technology" },
@@ -13,15 +14,6 @@ const courses = [
   { label: "Mechanical Engineering", value: "Mechanical Engineering" },
   { label: "Production Engineering", value: "Production Engineering" },
   { label: "Mathemetics", value: "Mathemetics" },
-];
-
-const cities = [
-  { label: "Anand", value: "Anand" },
-  { label: "Rajkot", value: "Rajkot" },
-  { label: "Junagadh", value: "Junagadh" },
-  { label: "Vadodara", value: "Vadodara" },
-  { label: "Ahemadabad", value: "Ahemadabad" },
-  { label: "Surat", value: "Surat" },
 ];
 
 function CollegeDetails(props) {
@@ -94,20 +86,18 @@ function CollegeDetails(props) {
         </Grid>
         <Grid item xs={12}>
           <Field name={city.name}>
-            {({ field }) => (
+            {({ field, form }) => (
               <Autocomplete
                 id="city"
                 name="city"
                 options={cities}
-                getOptionLabel={(option) => option.label}
-                value={cities.find((option) => option.value === values.city) || null}
+                value={cities.find((option) => option.label === values.city.label)|| null}
                 onChange={(event, newValue) => {
-                  handleChange({
-                    target: { name: "city", value: newValue?.value || null },
-                  });
+                  console.log(newValue);
+                  handleChange({ target: { name: 'city', value: newValue || null } });
                 }}
                 onBlur={() => {
-                  handleBlur({ target: { name: "city" } });
+                  handleBlur({ target: { name: 'city' } });
                 }}
                 renderInput={(params) => (
                   <InputField

@@ -44,7 +44,7 @@ const feedSclice = createSlice({
                 state.feed.isLoading = false
                 state.feed.success = true
                 state.feed.isError = false
-                state.feed.data = action.payload
+                state.feed.data = action.payload.result
                 state.feed.message = ''
             })
             .addCase(getFeedData.rejected, (state, action) => {

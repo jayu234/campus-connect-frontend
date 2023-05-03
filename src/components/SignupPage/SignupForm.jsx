@@ -91,7 +91,6 @@ export default function SignupForm() {
 
   function _handleSubmit(values, actions) {
     if (isLastStep) {
-      console.log(values);
       _submitForm(values, actions);
     } else {
       setActiveStep(activeStep + 1);
