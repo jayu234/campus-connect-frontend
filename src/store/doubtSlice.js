@@ -14,6 +14,7 @@ const initialState = {
     relatedDoubts: init,
     similarDoubts: init,
     doubtDetails: { ...init, data: {} },
+    myDoubts: init
 }
 
 
@@ -48,6 +49,19 @@ export const getDoubtDetails = createAsyncThunk(
     async (id, thunkAPI) => {
         try {
             return await doubtService.getDoubtDetails(id);
+        } catch (error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
+export const getMyDoubts = createAsyncThunk(
+    'doubt/myDoubts',
+    async (id, thunkAPI) => {
+        try {
+            return await doubtService.getMyDoubts(id);
         } catch (error) {
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -125,6 +139,26 @@ const doubtSlice = createSlice({
                 state.doubtDetails.data = []
                 state.doubtDetails.isError = true
                 state.doubtDetails.message = action.payload
+            })
+            .addCase(getMyDoubts.pending, (state) => {
+                state.myDoubts.isLoading = true
+                state.myDoubts.success = false
+                state.myDoubts.isError = false
+                state.myDoubts.message = ''
+            })
+            .addCase(getMyDoubts.fulfilled, (state, action) => {
+                state.myDoubts.isLoading = false
+                state.myDoubts.success = true
+                state.myDoubts.data = action.payload.result
+                state.myDoubts.isError = false
+                state.myDoubts.message = ''
+            })
+            .addCase(getMyDoubts.rejected, (state, action) => {
+                state.myDoubts.isLoading = false
+                state.myDoubts.success = false
+                state.myDoubts.data = []
+                state.myDoubts.isError = true
+                state.myDoubts.message = action.payload
             })
     }
 })

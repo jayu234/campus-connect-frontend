@@ -41,7 +41,7 @@ export default [
   Yup.object().shape({
     [college.name]: Yup.string().required(`${college.requiredErrorMsg}`),
     [course.name]: Yup.string().required(`${course.requiredErrorMsg}`),
-    [city.name]: Yup.string().nullable().required(`${city.requiredErrorMsg}`),
+    [city.name]: Yup.object().required(`${city.requiredErrorMsg}`),
   }),
   Yup.object().shape({
     [interests.name]: Yup.array().of(Yup.object()).min(3, interests.requiredErrorMsg).required(`${interests.requiredErrorMsg}`)

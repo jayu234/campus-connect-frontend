@@ -27,7 +27,7 @@ function LeftSidebar() {
     }
   }, [isLoading])
   return (
-    <List sx={{ border: '1px solid #e2e8f0cc', borderRadius: "0.5rem", backgroundColor: '#fff', marginBottom: "2rem" }}>
+    <List sx={{ border: '1px solid #e2e8f0cc', borderRadius: "0.5rem", backgroundColor: '#fff', marginBottom: "2rem", height: "51vh", overflowY: "scroll" }}>
       <React.Fragment>
         {topicData?.length > 0 ? data.map((item) => {
           return (

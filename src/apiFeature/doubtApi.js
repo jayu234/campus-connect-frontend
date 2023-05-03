@@ -3,7 +3,7 @@ import axios from "axios";
 
 const getDoubtDetails = async(id) => {
     axios.defaults.withCredentials = true
-    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}//doubt/${id}`);
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/doubt/${id}`);
     return response.data;
 }
 
@@ -19,6 +19,12 @@ const getSimilarDoubts = async(id)=>{
     return response.data
 }
 
-const doubtService = { getRelatedDoubts, getDoubtDetails, getSimilarDoubts };
+const getMyDoubts = async(id)=>{
+    axios.defaults.withCredentials = true
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/doubt/all?user_id=${id}`);
+    return response.data
+}
+
+const doubtService = { getRelatedDoubts, getDoubtDetails, getSimilarDoubts, getMyDoubts };
 
 export default doubtService;
