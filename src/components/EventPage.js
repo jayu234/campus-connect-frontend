@@ -21,7 +21,7 @@ function EventPage() {
 					backgroundColor: "#f8fafc",
 				}}
 			>
-				<Grid item component={"aside"} xs={3} sx={{ marginLeft: "3rem" }}>
+				<Grid item component={"aside"} xs={4} sx={{ marginLeft: "3rem" }}>
 					<Box
 						sx={{
 							position: "sticky",
@@ -35,7 +35,7 @@ function EventPage() {
 						<EventPageLeftSidebar />
 					</Box>
 				</Grid>
-				<Grid item xs={7}>
+				<Grid item xs={6}>
 					<Box>
 						<EventPageRightSidebar />
 					</Box>

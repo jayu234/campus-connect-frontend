@@ -63,7 +63,7 @@ function EventPageRightSidebar({ props }) {
 							fontWeight: "500",
 						}}
 					>
-						BVM Engineering College
+						Udaan - BVM Cultural Festival
 					</Box>
 				</Box>
 
@@ -74,15 +74,24 @@ function EventPageRightSidebar({ props }) {
 						display: "flex",
 						flexDirection: "column",
 						boxShadow: "none",
-						paddingTop: "1rem",
 					}}
 				>
+					<Box
+						component="img"
+						sx={{
+							height: 400,
+							width: "100%",
+							borderRadius: "1rem",
+						}}
+						alt="The house from the offer."
+						src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+					/>
 					<CardContent sx={{ padding: "0rem 1.5rem" }}>
 						<Typography
 							variant="h5"
-							sx={{ fontFamily: "inherit", fontWeight: "500" }}
+							sx={{ fontFamily: "inherit", fontWeight: "500", marginTop:'1rem' }}
 						>
-							Udaan - BVM Cultural Festival
+							BVM Engineering College
 						</Typography>
 						<Typography
 							variant="body1"
@@ -148,19 +157,7 @@ function EventPageRightSidebar({ props }) {
 							Entry Fees : 5$
 						</Typography>
 					</CardContent>
-					<Box
-						component="img"
-						sx={{
-							marginBottom: "0rem",
-							marginTop: "1rem",
-							height: 500,
-							width: 1000,
-							maxHeight: { xs: 400, md: 1000 },
-							maxWidth: { xs: 400, md: 1000 },
-						}}
-						alt="The house from the offer."
-						src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-					/>
+
 					<CardActions
 						sx={{ display: "flex", padding: "0.3rem 2rem" }}
 						disableSpacing
