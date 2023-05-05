@@ -1,28 +1,10 @@
 import React from "react"
-
-import {
-	Card,
-	CardContent,
-	CardActions,
-	CardMedia,
-	Grid,
-	Typography,
-	Button,
-} from "@mui/material"
-
+import { Card, CardContent, Typography, Button } from "@mui/material"
 import CardHeader from "@mui/material/CardHeader"
 import Avatar from "@mui/material/Avatar"
-import IconButton from "@mui/material/IconButton"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"
-import ThumbDownIcon from "@mui/icons-material/ThumbDown"
-import { Divider, Menu, MenuItem } from "@mui/material"
-import EditIcon from "@mui/icons-material/Edit"
-import ShareIcon from "@mui/icons-material/Share"
+import { Divider } from "@mui/material"
 import { Box } from "@mui/system"
-import { answers } from "../data/answers"
 import { useNavigate } from "react-router"
-
 
 const months = [
 	"January",
@@ -38,7 +20,6 @@ const months = [
 	"November",
 	"December",
 ]
-
 
 function AnswerPost({ item }) {
 	const [anchorEl, setAnchorEl] = React.useState(null)
@@ -64,10 +45,8 @@ function AnswerPost({ item }) {
 				width: "100%",
 				display: "flex",
 				flexDirection: "column",
-				boxShadow: "none",
-				cursor: 'pointer'
+				boxShadow: "none"
 			}}
-			onClick={() => { navigate(`/question/${_id}`) }}
 		>
 			<CardHeader
 				avatar={
@@ -78,7 +57,7 @@ function AnswerPost({ item }) {
 						sx={{ width: "3rem", height: "3rem" }}
 					/>
 				}
-				title={author.firstName +" "+author.lastName}
+				title={author.firstName + " " + author.lastName}
 				subheader={`${author.username} ~ ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
 				sx={{ padding: "1rem 1.5rem 0.7rem 1.5rem" }}
 				subheaderTypographyProps={{
@@ -92,8 +71,7 @@ function AnswerPost({ item }) {
 				}}
 			/>
 			<CardContent sx={{ padding: "0.2rem 1.6rem 0rem 1.6rem" }}>
-				<Typography
-					sx={{ fontFamily: "inherit", fontSize: "1.3rem", fontWeight: '500' }}
+				<Typography sx={{ fontFamily: "inherit", fontSize: "1.3rem", fontWeight: '500', cursor: "pointer" }} onClick={() => { navigate(`/question/${_id}`) }}
 				>
 					{content}
 				</Typography>
@@ -131,7 +109,6 @@ function AnswerPost({ item }) {
 					Give Answer
 				</Button>
 			</Box>
-
 			<Divider />
 		</Card>
 	)

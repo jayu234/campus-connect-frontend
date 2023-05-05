@@ -1,6 +1,6 @@
 import * as React from "react"
 import Home from "./components/Home"
-import { BrowserRouter, Routes, Route, redirect, useNavigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./components/Login"
 import Signup from "./components/SignupPage"
 import PageNotFound from "./components/PageNotFound"
@@ -15,17 +15,45 @@ import AnswerPage from "./components/AnswerPage"
 import EventPage from "./components/EventPage"
 import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from "./store/userSlice"
+import { Grid } from "react-loader-spinner"
 
 function App() {
 	const { isAuthenticated } = useSelector((state) => state.user);
+	const { loadUser: { isLoading } } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	React.useEffect(() => {
 		dispatch(loadUser());
 	}, [dispatch])
+	function _renderComponent() {
+		if (isLoading) {
+			return (
+				<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+					<Grid
+						height="80"
+						width="80"
+						color="#186bf0"
+						ariaLabel="grid-loading"
+						radius="12.5"
+						wrapperStyle={{}}
+						wrapperClass=""
+						visible={true}
+					/>
+				</div>
+			)
+		}
+		else {
+			if (!isAuthenticated) {
+				return (<Login />)
+			}
+			else {
+				return (<Home />)
+			}
+		}
+	}
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route exact path="/" element={isAuthenticated ? <Home /> : <Login />}>
+				<Route exact path="/" element={_renderComponent()}>
 					<Route exact path="/" element={<Feed />} />
 					<Route exact path="/following" element={<Following />} />
 					<Route exact path="/answer" element={<Answer />} />

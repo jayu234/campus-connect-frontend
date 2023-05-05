@@ -1,28 +1,52 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Button, Divider } from '@mui/material';
+import { Divider, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
-import { BsHeart } from "react-icons/bs"
+import { BsHeart, BsHeartFill } from "react-icons/bs"
+import { FiShare2 } from "react-icons/fi"
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export default function PostItem({ post }) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	}
-
+	const { loadUser } = useSelector((state) => state.user);
+	const userId = loadUser.data._id;
+	const [isLiked, setIsLiked] = useState(post.likes.includes(userId));
+	const [likes, setLikes] = useState(post.likes.length);
 	const date = new Date(post.createdAt);
+	const handleToggleLikeUnlike = async () => {
+		if (isLiked) {
+			setIsLiked(!isLiked);
+
+			setLikes(likes - 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/post/like/${post._id}`).catch((err) => {
+				setLikes(likes + 1);
+				console.log("Falied to unlike post", err);
+			});
+		} else {
+			setIsLiked(!isLiked);
+			setLikes(likes + 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/post/like/${post._id}`).catch((err) => {
+				setLikes(likes - 1);
+				console.log("Falied to like post", err);
+			});
+		}
+	}
+	async function sharePost({ title, text, url }) {
+		if (navigator.share) {
+			try {
+				await navigator.share({ title, text, url });
+			} catch (e) {
+				console.log("Error while sharing the post", e);
+			}
+		}
+	}
 	return (
 		<Card
 			sx={{
@@ -77,7 +101,7 @@ export default function PostItem({ post }) {
 					maxHeight: { xs: 400, md: 1000 },
 					maxWidth: { xs: 400, md: 862 },
 				}}
-				alt="The house from the offer."
+				alt="post_image"
 				src={post.images[0].url}
 			/>}
 			<CardActions
@@ -85,18 +109,15 @@ export default function PostItem({ post }) {
 				disableSpacing
 			>
 				<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-					<Button
-						component={"div"}
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							cursor: "pointer",
-							fontSize: "1.1rem",
-						}}
-						startIcon={<BsHeart size={23} />}
-					>
-						{post.likes.length > 0 && post.likes.length}
-					</Button>
+					<IconButton onClick={handleToggleLikeUnlike}>
+						{isLiked ? <BsHeartFill size={23} color='#1A64CC' /> : <BsHeart size={23} color='#1A64CC' />}
+					</IconButton>
+					{likes > 0 && <Typography component={"span"} variant="body1" fontFamily={"inherit"} marginRight={"1rem"}>
+						{likes}
+					</Typography>}
+					<IconButton onClick={() => { sharePost({ title: post.title, url: `${process.env.REACT_APP_HOST}/post/${post._id}` }) }}>
+						<FiShare2 color='#1A64CC' />
+					</IconButton>
 				</Box>
 			</CardActions>
 			<Divider />

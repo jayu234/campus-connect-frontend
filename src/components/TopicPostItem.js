@@ -56,12 +56,12 @@ export default function TopicPostItem({ post }) {
 			<CardHeader
 				avatar={
 					<Avatar
-						src={`/images/${post.author.imgName}.jpg`}
+						src={post.author.avatar.url}
 						aria-label="recipe"
 						sx={{ width: "3rem", height: "3rem" }}
 					/>
 				}
-				title={post.author.name}
+				title={post.author.firstName + " " + post.author.lastName}
 				subheader={`${post.author.username} ~ ${
 					months[date.getMonth()]
 				} ${date.getDate()}, ${date.getFullYear()}`}
@@ -116,7 +116,7 @@ export default function TopicPostItem({ post }) {
 						}}
 						startIcon={<BsHeart size={23} />}
 					>
-						{post.likes > 0 && post.likes}
+						{post.likes.length > 0 && post.likes.length}
 					</Button>
 				</Box>
 			</CardActions>

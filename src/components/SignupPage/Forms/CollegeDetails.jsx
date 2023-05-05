@@ -93,7 +93,6 @@ function CollegeDetails(props) {
                 options={cities}
                 value={cities.find((option) => option.label === values.city.label)|| null}
                 onChange={(event, newValue) => {
-                  console.log(newValue);
                   handleChange({ target: { name: 'city', value: newValue || null } });
                 }}
                 onBlur={() => {

@@ -25,6 +25,12 @@ const getMyDoubts = async(id)=>{
     return response.data
 }
 
-const doubtService = { getRelatedDoubts, getDoubtDetails, getSimilarDoubts, getMyDoubts };
+const createDoubt = async(data)=>{
+    axios.defaults.withCredentials = true
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/doubt/create`, data);
+    return response.data
+}
+
+const doubtService = { getRelatedDoubts, getDoubtDetails, getSimilarDoubts, getMyDoubts, createDoubt };
 
 export default doubtService;

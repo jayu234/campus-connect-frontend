@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFollowing } from '../store/topicSlice';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Alert from './Alert';
+import { useNavigate } from 'react-router-dom';
 
 function Following() {
 
   const { loadUser: { data: { _id } } } = useSelector((state) => state.user);
   const { following: { data, success, isLoading, isError } } = useSelector((state) => state.topic);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [followingTopics, setFollowingTopics] = useState([]);
   const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -73,39 +74,43 @@ function Following() {
         <Grid container component={'section'} marginTop={0.75} mb={2} spacing={1} rowSpacing={2}>
           {followingTopics.length > 0 ? followingTopics.map((topic) => {
             return (
-              <Grid key={topic._id} item xs={4}>
-                <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer', paddingBottom: '6px' }}>
-                  <CardMedia
-                    component="img"
-                    alt={topic.hashtag + '_cover'}
-                    height="140"
-                    src={topic.avatar.url}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"} sx={{ fontSize: '16px' }}>
-                      {topic.label}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" fontFamily={"inherit"}>
-                      {topic.description.slice(0, 90).concat("...")}
-                    </Typography>
-                  </CardContent>
-                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between', paddingX: '16px' }}>
-                    <Button
-                      id={topic._id}
-                      tabIndex={topic.index}
-                      onClick={() => { handleFollowingBtnChange(topic) }}
-                      size="small"
-                      variant={topic.following ? 'outlined' : 'contained'}
-                      // variant='outlined'
-                      sx={{ textTransform: "none", fontFamily: "inherit" }}
-                      disableTouchRipple
-                    >
-                      {topic.following ? 'Following' : 'Follow'}
-                    </Button>
-                    <Button size="small" disableTouchRipple sx={{ textTransform: "none", fontFamily: "inherit" }} >Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
+              <React.Fragment>
+                <Grid key={topic._id} item xs={4}>
+                  <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', paddingBottom: '6px' }}>
+                    <CardMedia
+                      component="img"
+                      alt={topic.hashtag + '_cover'}
+                      height="140"
+                      src={topic.avatar.url}
+                      onClick={() => { navigate(`/topic/${topic._id}`) }}
+                      sx={{ cursor: 'pointer' }}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"} fontSize={'16px'}
+                        onClick={() => { navigate(`/topic/${topic._id}`) }} sx={{ cursor: 'pointer' }}>
+                        {topic.label}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" fontFamily={"inherit"}>
+                        {topic.description.slice(0, 90).concat("...")}
+                      </Typography>
+                    </CardContent>
+                    <CardActions sx={{ display: 'flex', justifyContent: 'space-between', paddingX: '16px' }}>
+                      <Button
+                        id={topic._id}
+                        tabIndex={topic.index}
+                        onClick={() => { handleFollowingBtnChange(topic) }}
+                        size="small"
+                        variant={topic.following ? 'outlined' : 'contained'}
+                        sx={{ textTransform: "none", fontFamily: "inherit" }}
+                        disableTouchRipple
+                      >
+                        {topic.following ? 'Following' : 'Follow'}
+                      </Button>
+                      <Button size="small" disableTouchRipple sx={{ textTransform: "none", fontFamily: "inherit" }} onClick={() => { navigate(`/topic/${topic._id}`) }} >Learn More</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </React.Fragment>
             )
           }) :
             (
@@ -147,47 +152,6 @@ function Following() {
             Following
           </Typography>
           {_renderFollowing(isLoading, success, isError)}
-          {/* <Typography variant='h5' fontFamily={"inherit"} fontWeight="500" sx={{marginTop:'30px'}}>
-          Suggested
-        </Typography>
-        <Grid container component={'section'} marginTop={0.75} mb={2} columnSpacing={1} rowSpacing={2}>
-          {suggestedTopics.map((topic) => {
-            return (
-              <Grid key={topic._id} item xs={4}>
-                <Card sx={{ maxWidth: 300, border: '1px solid #e2e8f0cc', borderRadius: '0.5rem', cursor: 'pointer', paddingBottom:'6px' }}>
-                  <CardMedia
-                    component="img"
-                    alt="Web Developement"
-                    height="140"
-                    image={`/images/${topic.imgName}.jpg`}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h6" component="div" fontFamily={"inherit"} sx={{fontSize:'16px'}}>
-                      {topic.label}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" fontFamily={"inherit"}>
-                      {topic.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions sx={{ display: 'flex', justifyContent: 'space-between', paddingX:'16px'}}>
-                    <Button
-                      id={topic._id}
-                      tabIndex={topic._id}
-                      onClick={() => { handleSuggestedTopicChange(topic) }}
-                      size="small"
-                      variant={topic.following ? 'outlined' : 'contained'}
-                      sx={{ textTransform: "none", fontFamily: "inherit" }}
-                      disableTouchRipple
-                    >
-                      {topic.following ? 'Following' : 'Follow'}
-                    </Button>
-                    <Button size="small" sx={{ textTransform: "none", fontFamily: "inherit" }} >Learn More</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            )
-          })}
-        </Grid> */}
         </Grid>
       </Grid>
       {open && <Alert message={alertMessage} severity={'error'} />}

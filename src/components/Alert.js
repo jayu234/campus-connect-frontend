@@ -6,9 +6,7 @@ const MyAlert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const vertical = 'bottom', horizontal = 'center';
-
-function Alert({ message, severity}) {
+function Alert({ message, severity, verticalPos, horizontalPos}) {
     const [open, setOpen] = React.useState(true);
 
 	const handleClose = (event, reason) => {
@@ -22,8 +20,8 @@ function Alert({ message, severity}) {
             <Stack spacing={2} sx={{ width: '100%' }}>
                 <Snackbar
                     open={open}
-                    anchorOrigin={{ vertical, horizontal }}
-                    key={vertical + horizontal}
+                    anchorOrigin={{ vertical: verticalPos, horizontal: horizontalPos }}
+                    key={verticalPos + horizontalPos}
                     autoHideDuration={3000}
                     onClose={handleClose}
                 >

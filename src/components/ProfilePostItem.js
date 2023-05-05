@@ -52,7 +52,7 @@ export default function ProfilePostItem({ post }) {
 			}}
 		>
 			<CardHeader
-				avatar={<Avatar src={`/images/z1.jpg`} aria-label="recipe" />}
+				avatar={<Avatar src={post.author.avatar.url} aria-label="recipe" />}
 				action={
 					<IconButton
 						aria-controls="menu-appbar"
@@ -63,7 +63,7 @@ export default function ProfilePostItem({ post }) {
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title={post.author.name}
+				title={post.author.firstName + " " + post.author.lastName}
 				subheader={`${
 					months[date.getMonth()]
 				} ${date.getDate()}, ${date.getFullYear()}`}
