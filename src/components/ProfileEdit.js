@@ -2,12 +2,17 @@ import React from "react"
 import Header from "./Header"
 import ProfileLeftSidebar from "./ProfileLeftSidebar"
 import ProfileRightSidebar from "./ProfileRightSidebar"
-import { Grid, Box } from "@mui/material"
+import { Grid, Box, Button, Autocomplete } from "@mui/material"
 import PropTypes from "prop-types"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import Typography from "@mui/material/Typography"
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { Divider } from "@mui/material"
+import TextField from "@mui/material/TextField"
+import MenuItem from "@mui/material/MenuItem"
+import colleges from "../data/collegeName"
+import cities from "../data/cities"
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
@@ -28,6 +33,16 @@ function TabPanel(props) {
 		</div>
 	)
 }
+const courses = [
+	{ label: "Information Technology", value: "Information Technology" },
+	{ label: "Computer Science", value: "Computer Science" },
+	{ label: "Civil Engineering", value: "Civil Engineering" },
+	{ label: "Electronics Engineering", value: "Electronics Engineering" },
+	{ label: "Electrical Engineering", value: "Electrical Engineering" },
+	{ label: "Mechanical Engineering", value: "Mechanical Engineering" },
+	{ label: "Production Engineering", value: "Production Engineering" },
+	{ label: "Mathemetics", value: "Mathemetics" },
+]
 
 TabPanel.propTypes = {
 	children: PropTypes.node,
@@ -42,22 +57,20 @@ function a11yProps(index) {
 	}
 }
 
-
 const genders = [
-  {
-    value: "male",
-    label: "Male",
-  },
-  {
-    value: "female",
-    label: "Female",
-  },
-  {
-    value: "other",
-    label: "Other",
-  },
-];
-
+	{
+		value: "male",
+		label: "Male",
+	},
+	{
+		value: "female",
+		label: "Female",
+	},
+	{
+		value: "other",
+		label: "Other",
+	},
+]
 
 function ProfileEdit() {
 	const [value, setValue] = React.useState(1)
@@ -142,53 +155,410 @@ function ProfileEdit() {
 								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem" }}
 							/>
 						</Tabs>
-						<TabPanel value={value} index={1}>
-							<Box>
-								<Grid container spacing={3}>
-									<Grid item xs={12} sm={6}>
-										<InputField
-											name={firstName.name}
-											label={firstName.label}
-											fullWidth
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<InputField
-											name={lastName.name}
-											label={lastName.label}
-											fullWidth
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<SelectField
-											name={gender.name}
-											label={gender.label}
-											data={genders}
-											fullWidth
-										/>
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<InputField name={age.name} label={age.label} fullWidth />
-									</Grid>
-									<Grid item xs={12} sm={6}>
-										<InputField
-											name={username.name}
-											label={username.label}
-											fullWidth
-										/>
-									</Grid>
-								</Grid>
-							</Box>
-						</TabPanel>
-						<TabPanel value={value} index={2}>
-							Item Two
-						</TabPanel>
-						<TabPanel value={value} index={3}>
-							Item Three
-						</TabPanel>
-						<TabPanel value={value} index={4}>
-							Item Four
-						</TabPanel>
+						<Box sx={{ paddingLeft: "2rem" }}>
+							<TabPanel value={value} index={1}>
+								<Typography
+									sx={{
+										fontFamily: "inherit",
+										textAlign: "justify",
+										fontSize: "1.4rem",
+									}}
+								>
+									Personal Details
+								</Typography>
+								<Divider />
+
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "2rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										First Name :
+									</Typography>
+									<TextField
+										required
+										id="outlined-required"
+										label="Required"
+										defaultValue="Kashyap"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										Last Name :
+									</Typography>
+									<TextField
+										required
+										id="outlined-required"
+										label="Required"
+										defaultValue="Bavadiya"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										Username :
+									</Typography>
+									<TextField
+										disabled
+										id="outlined-required"
+										label="Required"
+										defaultValue="Kashyapmb"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										Gender :
+									</Typography>
+									<TextField
+										id="outlined-select-currency"
+										select
+										label="Select"
+										defaultValue="male"
+									>
+										{genders.map((option) => (
+											<MenuItem key={option.value} value={option.value}>
+												{option.label}
+											</MenuItem>
+										))}
+									</TextField>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										Age :
+									</Typography>
+									<TextField
+										required
+										id="outlined-number"
+										label="Number"
+										type="text"
+										defaultValue="20"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1.8rem",
+									}}
+								>
+									<Button variant="contained">Save</Button>
+								</Box>
+							</TabPanel>
+							<TabPanel value={value} index={2}>
+								<Typography
+									sx={{
+										fontFamily: "inherit",
+										textAlign: "justify",
+										fontSize: "1.4rem",
+									}}
+								>
+									Login Details
+								</Typography>
+								<Divider />
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "2rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										Contact No :
+									</Typography>
+									<TextField
+										disabled
+										id="outlined-number"
+										label="Number"
+										type="text"
+										defaultValue="9023381314"
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										Email :
+									</Typography>
+									<TextField
+										disabled
+										id="outlined-required"
+										label="Email"
+										defaultValue="bavadiyakashyap@gmail.com"
+										sx={{ width: "20rem" }}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										Current Password :
+									</Typography>
+									<TextField
+										id="outlined-password-input"
+										label="Password"
+										type="password"
+										autoComplete="current-password"
+										defaultValue="************"
+										sx={{ width: "20rem" }}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										New Password :
+									</Typography>
+									<TextField
+										id="outlined-password-input"
+										label="Password"
+										type="password"
+										autoComplete="current-password"
+										sx={{ width: "20rem" }}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										C. New Password :
+									</Typography>
+									<TextField
+										id="outlined-password-input"
+										label="Confirm Password"
+										type="password"
+										autoComplete="current-password"
+										sx={{ width: "20rem" }}
+									/>
+								</Box>
+
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1.8rem",
+									}}
+								>
+									<Button variant="contained">Change Password</Button>
+								</Box>
+							</TabPanel>
+							<TabPanel value={value} index={3}>
+								<Typography
+									sx={{
+										fontFamily: "inherit",
+										textAlign: "justify",
+										fontSize: "1.4rem",
+									}}
+								>
+									Education Details
+								</Typography>
+								<Divider />
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "2rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										College Name :
+									</Typography>
+									<Autocomplete
+										disablePortal
+										id="college"
+										options={colleges}
+										getOptionLabel={(option) => option.label}
+										sx={{ width: 300 }}
+										renderInput={(params) => (
+											<TextField {...params} label="College" />
+										)}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										Course :
+									</Typography>
+									<Autocomplete
+										disablePortal
+										id="combo-box-demo"
+										options={courses}
+										sx={{ width: 300 }}
+										renderInput={(params) => (
+											<TextField {...params} label="Course" />
+										)}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "13rem",
+										}}
+									>
+										City :
+									</Typography>
+									<Autocomplete
+										disablePortal
+										id="combo-box-demo"
+										options={cities}
+										getOptionLabel={(option) => option.label}
+										sx={{ width: 300 }}
+										renderInput={(params) => (
+											<TextField {...params} label="City" />
+										)}
+									/>
+								</Box>
+
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "2.4rem",
+									}}
+								>
+									<Button variant="contained">Save</Button>
+								</Box>
+							</TabPanel>
+						</Box>
 					</Box>
 				</Grid>
 			</Grid>

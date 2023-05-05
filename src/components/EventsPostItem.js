@@ -49,107 +49,87 @@ export default function EventsPostItem({ post }) {
 				marginTop: "1rem",
 				width: "100%",
 				display: "flex",
-				flexDirection: "column",
 				boxShadow: "none",
+				justifyContent: "space-between",
 			}}
 		>
-			<CardHeader
-				title={post.collegename}
-				sx={{ padding: "1rem 1.5rem 0.7rem 1.5rem" }}
-				titleTypographyProps={{
-					fontFamily: "inherit",
-					fontSize: "1.5rem",
-					fontWeight: "500",
-				}}
-			/>
-			<CardContent sx={{ padding: "0rem 1.5rem" }}>
-				<Typography
-					variant="h5"
-					sx={{ fontFamily: "inherit", fontWeight: "500" }}
+			<Box>
+				<CardContent sx={{ padding: "1rem 1.5rem" }}>
+					<Typography
+						sx={{
+							fontFamily: "inherit",
+							fontWeight: "500",
+							fontSize: "1.5rem",
+						}}
+					>
+						{post.title}
+					</Typography>
+					<Typography
+						sx={{
+							fontFamily: "inherit",
+							fontSize: "1.3rem",
+							marginTop: "0.5rem",
+						}}
+					>
+						{post.collegename}
+					</Typography>
+					<Typography
+						sx={{
+							fontFamily: "inherit",
+							color: "black",
+							fontSize: "1.1rem",
+							marginTop: "0.5rem",
+						}}
+					>
+						Time : {post.time}
+					</Typography>
+					<Typography
+						sx={{
+							fontFamily: "inherit",
+							color: "black",
+							fontSize: "1.1rem",
+						}}
+					>
+						Date :
+						{` ${
+							months[date.getMonth()]
+						} ${date.getDate()}, ${date.getFullYear()}`}
+					</Typography>
+				</CardContent>
+
+				<CardActions
+					sx={{ display: "flex", padding: "0.3rem 2rem" }}
+					disableSpacing
 				>
-					{post.title}
-				</Typography>
-				<Typography
-					variant="body1"
-					color="text.secondary"
-					sx={{ fontFamily: "inherit", textAlign: "justify" }}
-				>
-					{post.content}
-				</Typography>
-				<Typography
-					sx={{
-						fontFamily: "inherit",
-						color: "black",
-						fontSize: "1.1rem",
-						marginTop: "0.5rem",
-					}}
-				>
-					Time : {post.time}
-				</Typography>
-				<Typography
-					sx={{
-						fontFamily: "inherit",
-						color: "black",
-						fontSize: "1.1rem",
-					}}
-				>
-					Date :
-					{` ${
-						months[date.getMonth()]
-					} ${date.getDate()}, ${date.getFullYear()}`}
-				</Typography>
-				<Typography
-					sx={{
-						fontFamily: "inherit",
-						color: "black",
-						fontSize: "1.1rem",
-					}}
-				>
-					Location : {post.location}
-				</Typography>
-				<Typography
-					sx={{
-						fontFamily: "inherit",
-						color: "black",
-						fontSize: "1.1rem",
-					}}
-				>
-					Entry Fees : {post.fees}
-				</Typography>
-			</CardContent>
-            <Box
+					<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+						<Button
+							component={"div"}
+							sx={{
+								display: "flex",
+								alignItems: "center",
+								cursor: "pointer",
+								fontSize: "1.1rem",
+							}}
+							startIcon={<BsHeart size={23} />}
+						>
+							{post.likes > 0 && post.likes}
+						</Button>
+					</Box>
+				</CardActions>
+			</Box>
+			<Box
 				component="img"
 				sx={{
-					marginBottom: "0rem",
-					marginTop: "1rem",
-					height: 500,
-					width: 1000,
-					maxHeight: { xs: 400, md: 1000 },
-					maxWidth: { xs: 400, md: 1000 },
+					height: 200,
+					width: 400,
+					margin: "1rem",
+					borderRadius: "1rem",
+					maxHeight: { xs: 200, md: 300 },
+					maxWidth: { xs: 200, md: 300 },
 				}}
 				alt="The house from the offer."
 				src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
 			/>
-			<CardActions
-				sx={{ display: "flex", padding: "0.3rem 2rem" }}
-				disableSpacing
-			>
-				<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-					<Button
-						component={"div"}
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							cursor: "pointer",
-							fontSize: "1.1rem",
-						}}
-						startIcon={<BsHeart size={23} />}
-					>
-						{post.likes > 0 && post.likes}
-					</Button>
-				</Box>
-			</CardActions>
-			<Divider />
 		</Card>
 	)
 }
