@@ -14,7 +14,8 @@ const initialState = {
     relatedDoubts: init,
     similarDoubts: init,
     doubtDetails: { ...init, data: {} },
-    myDoubts: init
+    myDoubts: init,
+    newDoubt: { ...init, data: {} }
 }
 
 
@@ -70,12 +71,28 @@ export const getMyDoubts = createAsyncThunk(
     }
 )
 
+export const createDoubt = createAsyncThunk(
+    'doubt/create',
+    async (data, thunkAPI) => {
+        try {
+            return await doubtService.createDoubt(data);
+        } catch (error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
 const doubtSlice = createSlice({
     name: 'doubt',
     initialState,
     reducers: {
         resetDoubtState(state) {
             state = initialState
+        },
+        resetNewDoubtState(state) {
+            state.newDoubt = { ...init, data: {} }
         }
     },
     extraReducers: (builder) => {
@@ -160,7 +177,28 @@ const doubtSlice = createSlice({
                 state.myDoubts.isError = true
                 state.myDoubts.message = action.payload
             })
+            .addCase(createDoubt.pending, (state) => {
+                state.newDoubt.isLoading = true
+                state.newDoubt.data = {}
+                state.newDoubt.success = false
+                state.newDoubt.isError = false
+                state.newDoubt.message = ''
+            })
+            .addCase(createDoubt.fulfilled, (state, action) => {
+                state.newDoubt.isLoading = false
+                state.newDoubt.success = true
+                state.newDoubt.data = action.payload.result
+                state.newDoubt.isError = false
+                state.newDoubt.message = ''
+            })
+            .addCase(createDoubt.rejected, (state, action) => {
+                state.newDoubt.isLoading = false
+                state.newDoubt.success = false
+                state.newDoubt.data = {}
+                state.newDoubt.isError = true
+                state.newDoubt.message = action.payload
+            })
     }
 })
-
+export const { resetNewDoubtState } = doubtSlice.actions
 export default doubtSlice.reducer;

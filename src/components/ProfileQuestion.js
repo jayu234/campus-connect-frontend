@@ -28,7 +28,7 @@ function ProfileQuestion() {
 		}
 		else if (success) {
 			return (data.length > 0 ? (data.map((item) => {
-				return <ProfileQuestionComponent key={item._id} post={item} />
+				return <ProfileQuestionComponent key={item._id} doubt={item} />
 			})) : (
 				<Typography align="center" fontFamily={'inherit'}>No data to display.</Typography>
 			))

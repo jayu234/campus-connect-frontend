@@ -32,7 +32,7 @@ const months = [
 	"December",
 ]
 
-function ProfileQuestionComponent({ post }) {
+function ProfileQuestionComponent({ doubt }) {
 	const [anchorEl, setAnchorEl] = React.useState(null)
 
 	const handleMenu = (event) => {
@@ -45,7 +45,7 @@ function ProfileQuestionComponent({ post }) {
 
 	const [open, setOpen] = React.useState(false)
 
-	const date = new Date(post.createdAt)
+	const date = new Date(doubt.createdAt)
 
 	return (
 		<>
@@ -61,15 +61,15 @@ function ProfileQuestionComponent({ post }) {
 			>
 				<CardContent sx={{padding:'0.8rem 1.5rem 0rem 1.5rem'}}>
 					<Typography variant="subtitle1" sx={{ fontFamily: "inherit" }}>
-						<strong>{post.question}</strong>
+						<strong>{doubt.content}</strong>
 					</Typography>
 					<Typography
 						variant="body1"
 						color="text.secondary"
 						sx={{ fontFamily: "inherit" }}
 					>
-						{post.answer.length}
-						{post.answer.length < 2 ? " Answer" : " Answers"}
+						{doubt.answers.length}
+						{doubt.answers.length < 2 ? " Answer" : " Answers"}
 					</Typography>
 				</CardContent>
 				<Box sx={{padding:'0.4rem 0rem 1rem 1rem'}}>

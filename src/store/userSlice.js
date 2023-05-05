@@ -20,7 +20,7 @@ const initialState = {
   },
   loadUser: {
     data: {},
-    isLoading: false,
+    isLoading: true,
     success: false,
     isError: false,
     message: '',

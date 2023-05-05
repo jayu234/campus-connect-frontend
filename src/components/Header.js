@@ -184,6 +184,7 @@ function Navbar() {
 									borderRadius: "20px",
 									textTransform: "none",
 									boxShadow: "none",
+									fontFamily: "inherit",
 									":hover": { boxShadow: "none" },
 								}}
 								onClick={() => {
