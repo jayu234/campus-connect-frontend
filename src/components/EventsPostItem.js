@@ -128,7 +128,7 @@ export default function EventsPostItem({ post }) {
 					maxWidth: { xs: 200, md: 300 },
 				}}
 				alt="The house from the offer."
-				src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+				src={post.image.url}
 			/>
 		</Card>
 	)

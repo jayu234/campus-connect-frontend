@@ -32,16 +32,6 @@ const months = [
 ]
 
 function AnswerPageComponent({ post }) {
-	const [anchorEl, setAnchorEl] = React.useState(null)
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget)
-	}
-
-	const handleClose = () => {
-		setAnchorEl(null)
-	}
-
 	const date = new Date(post.createdAt)
 	return (
 		<React.Fragment>
@@ -58,12 +48,12 @@ function AnswerPageComponent({ post }) {
 				<CardHeader
 					avatar={
 						<Avatar
-							src={`/images/${post.author.imgName}.jpg`}
+							src={post.author.avatar.url}
 							aria-label="recipe"
 							sx={{ width: "3rem", height: "3rem" }}
 						/>
 					}
-					title={post.author.name}
+					title={post.author.firstName + " " + post.author.lastName}
 					subheader={`${post.author.username} ~ ${
 						months[date.getMonth()]
 					} ${date.getDate()}, ${date.getFullYear()}`}
@@ -87,7 +77,7 @@ function AnswerPageComponent({ post }) {
 							textAlign: "justify",
 						}}
 					>
-						{post.answer}
+						{post.content}
 					</Typography>
 				</CardContent>
 				<CardActions

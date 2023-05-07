@@ -46,7 +46,7 @@ function _renderContent(isLoading, success, isError, data) {
 			<React.Fragment>
 				{data.length > 0 ? data.map((item) => {
 					return (
-						<AnswerPost item={item} />
+						<AnswerPost key={item._id} item={item} />
 					)
 				}): (
 					<Typography align="center" fontFamily={'inherit'} mt={4}>

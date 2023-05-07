@@ -10,7 +10,8 @@ const init = {
 }
 
 const initialState = {
-    myAnswers: init
+    myAnswers: init,
+    newAnswer: {...init, data: {}}
 }
 
 export const getMyAnswers = createAsyncThunk(
@@ -26,12 +27,28 @@ export const getMyAnswers = createAsyncThunk(
     }
 )
 
+export const createAnswer = createAsyncThunk(
+    'answer/newAnswer',
+    async (data, thunkAPI) => {
+        try {
+            return await answerService.createAnswer(data);
+        } catch (error) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
 const answerSlice = createSlice({
     name: 'answer',
     initialState,
     reducers: {
         resetState: (state) => {
             state = initialState
+        },
+        resetNewAnswerState(state) {
+            state.newAnswer = { ...init, data: {} }
         }
     },
     extraReducers: (builder) => {
@@ -56,7 +73,27 @@ const answerSlice = createSlice({
                 state.myAnswers.isError = true
                 state.myAnswers.message = action.payload
             })
+            .addCase(createAnswer.pending, (state) => {
+                state.newAnswer.isLoading = true
+                state.newAnswer.success = false
+                state.newAnswer.isError = false
+                state.newAnswer.message = ''
+            })
+            .addCase(createAnswer.fulfilled, (state, action) => {
+                state.newAnswer.isLoading = false
+                state.newAnswer.success = true
+                state.newAnswer.data = action.payload.result
+                state.newAnswer.isError = false
+                state.newAnswer.message = ''
+            })
+            .addCase(createAnswer.rejected, (state, action) => {
+                state.newAnswer.isLoading = false
+                state.newAnswer.success = false
+                state.newAnswer.data = {}
+                state.newAnswer.isError = true
+                state.newAnswer.message = action.payload
+            })
     }
 })
-
+export const { resetNewAnswerState } = answerSlice.actions
 export default answerSlice.reducer

@@ -14,7 +14,10 @@ export const events = [
 		fees: "5$",
 		eventname: "Udaan - 2023",
 		collegename: "BVM Engineering College",
-		images: ["competition"],
+		image: {
+			public_id: "",
+			url: "https://res.cloudinary.com/dfahmk4ht/image/upload/v1681824933/events/udaan23_fv7h9m.jpg"
+		},
 		author: {
 			avatar: {
 				public_id: "654120",
@@ -42,7 +45,10 @@ export const events = [
 		fees: "Free",
 		eventname: "Udaan - 2023",
 		collegename: "BVM Engineering College",
-		images: [],
+		image: {
+			public_id: "",
+			url: "https://res.cloudinary.com/dfahmk4ht/image/upload/v1683351784/events/1664424097354_n3esii.jpg"
+		},
 		author: {
 			avatar: {
 				public_id: "654120",
@@ -58,10 +64,10 @@ export const events = [
 	{
 		likes: 520,
 		_id: "63f875a4df01104d549c0e74",
-		title: "What is Javascript Slice?",
+		title: "GeeksforGeeks Weekly Coding Contest- Week 100th - Special edition",
 		tagline: "Tagline",
 		content:
-			"The slice method in JavaScript is used to extract a portion of an array or string. It takes two parameters: the start index and the end index. The start index specifies the index where the extraction should begin, and the end index specifies the index where the extraction should end (but not including the end index itself). The slice method does not modify the original array or string. Instead, it returns a new array or string that contains the extracted portion.",
+			"Hello Geeks ☺️,\n\nGeeksforGeeks Weekly Coding Contest- Week 100th - Special edition \nAfter successful completion of 99 weekly coding contests and helping students for their Interview Preparation. GeeksforGeeks is coming with a Special Edition for the 100th week.\nSo, test your skills and win wonderful prizes by just being top 100 performing contestants.\nREGISTER NOW 👍🏻\nLink: https://practice.geeksforgeeks.org/contest/gfg-weekly-coding-contest-100?utm_source=utm_medium=birlavishwakarmamahavidylayagujarat&utm_campaign=gfgweeklycodingcontest \nDate - 30th April 2023\nTiming- 7 PM to 8:30 PM \nBenifits:Top 100 participants will get a chance to land  Internship for various roles at GeeksforGeeks. \nSo, don't miss the chance and do Register for it this is your golden chance to land Internship at GFG. \nBest Regards,\nGFG Student Chapter BVM",
 		tags: ["event"],
 		edited: false,
 		date: "2023-02-24T08:28:17.015Z",
@@ -70,7 +76,10 @@ export const events = [
 		fees: "10$",
 		eventname: "Udaan - 2023",
 		collegename: "BVM Engineering College",
-		images: [],
+		image: {
+			public_id: "",
+			url: "https://res.cloudinary.com/dfahmk4ht/image/upload/v1683351524/events/WhatsApp_Image_2023-04-26_at_10.35.45_PM_kly1zh.jpg"
+		},
 		author: {
 			avatar: {
 				public_id: "654120",
@@ -82,148 +91,5 @@ export const events = [
 			name: "Ruchi Shingala",
 			email: "rshingala@gmail.com",
 		},
-	},
-	{
-		likes: 520,
-		_id: "63f875a4df01104d549c0e75",
-		title: "The fundamental of Javascript",
-		tagline: "Tagline",
-		content:
-			"JavaScript is a popular programming language used to create interactive websites and web applications. It is a high-level, interpreted language that can be used both on the client-side and server-side of web development. In this blog post, we will go through some of the fundamental concepts of JavaScript.",
-		tags: [],
-		edited: false,
-		date: "2023-02-24T08:28:17.015Z",
-		time: "8pm",
-		location: "V.V.Nagar, Anand",
-		fees: "Free",
-		eventname: "Udaan - 2023",
-		collegename: "BVM Engineering College",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z4",
-			_id: "63d66c4166f6cab200624e72",
-			username: "maitrypatel",
-			name: "Maitry Patel",
-			email: "mpatel@gmail.com",
-		},
-	},
-	{
-		likes: 520,
-		_id: "63f875a4df01104d549c0e76",
-		title: "Priority of CSS in File",
-		tagline: "Tagline",
-		content:
-			"The CSS can be used in three ways to design HTML tags, elements as well attributes i.e Inline, Internal, and External Style. Three of them have their own uses and requirements. But who is the first on the priority list when three of the methods will be implemented to specifically target the same tag in HTML? This concept can be understood properly by performing practically in ID. For instance when we use both internal and external style methods to target the same tag.",
-		tags: ["event"],
-		edited: false,
-		date: "2023-02-24T08:28:17.015Z",
-		time: "8pm",
-		location: "V.V.Nagar, Anand",
-		fees: "5$",
-		eventname: "Udaan - 2023",
-		collegename: "BVM Engineering College",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z5",
-			_id: "63d66c4166f6cab200624e72",
-			username: "dikshab",
-			name: "Diksha Bhatia",
-			email: "jayu@gmail.com",
-		},
-	},
-	{
-		likes: 520,
-		_id: "63f875a4df01104d549c0e76",
-		title:"Codigo BVM Codechef Chapter",
-		tagline: "Tagline",
-		content:
-			"In today's world, knowing the weather conditions has become a crucial aspect of our daily lives. With the advancements in technology, it has become easier to access weather information from anywhere in the world. OpenWeatherAPI is one such tool that provides accurate and up-to-date weather information for any location in the world. In this tutorial, we will be using OpenWeatherAPI to create a weather app. By the end of this tutorial, you will have a fully functional weather app that can display weather information for any location in the world. So, let's get started!",
-		fees: "5$",
-		time: "8pm",
-		tags: ["event"],
-
-		edited: false,
-		date: "2023-02-24T08:28:17.015Z",
-		time: "8pm",
-		location: "V.V.Nagar, Anand",
-		fees: "5$",
-		eventname: "Udaan - 2023",
-		collegename: "BVM Engineering College",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z6",
-			_id: "63d66c4166f6cab200624e72",
-			username: "sagar111",
-			name: "Sagar Sohagiya",
-			email: "sagar@gmail.com",
-		},
-	},
-	{
-		likes: 520,
-		_id: "63f875a4df01104d549c0e76",
-		title: "What is NPM and How Does It Help Web Developers?",
-		tagline: "Tagline",
-		content:
-			"These packages can do all sorts of cool things, like adding special effects to pictures, making websites load faster, or even helping with security! And just like how you can swap out your bucket of sand for a different color, programmers can easily switch between different NPM packages to find the one that works best for them. So, NPM helps make coding easier and more fun, just like how a bucket makes building sandcastles easier and more fun!",
-		tags: ["event"],
-		edited: false,
-		date: "2023-02-24T08:28:17.015Z",
-		time: "8pm",
-		location: "V.V.Nagar, Anand",
-		fees: "5$",
-		eventname: "Udaan - 2023",
-		collegename: "BVM Engineering College",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z7",
-			_id: "63d66c4166f6cab200624e72",
-			username: "kbusa",
-			name: "Krunal Busa",
-			email: "kbusa@gmail.com",
-		},
-	},
-	{
-		likes: 520,
-		_id: "63f875a4df01104d549c0e76",
-		title:"Codejam Google Competition",
-		tagline: "Tagline",
-		content:
-			"(1) Enhances User Satisfaction: A well-designed UX can improve user satisfaction and loyalty. It is essential to provide users with an enjoyable and seamless experience when using software. (2) Increases Efficiency: A well-designed interface can increase the efficiency of the software, making it easier for users to navigate and find the information they need. (3) Reduces Errors: A good UX design can reduce errors by making it easier for users to complete tasks accurately and quickly. (4) Saves Time and Money: Investing in UX design upfront can save time and money in the long run. A well-designed interface can reduce the need for user training and support, as users can quickly understand how to use the software.",
-		tags: ["event"],
-		edited: false,
-		date: "2023-02-24T08:28:17.015Z",
-		time: "8pm",
-		location: "V.V.Nagar, Anand",
-		fees: "5$",
-		eventname: "Udaan - 2023",
-		collegename: "BVM Engineering College",
-		images: [],
-		author: {
-			avatar: {
-				public_id: "654120",
-				url: "https://www.google.com",
-			},
-			imgName: "z8",
-			_id: "63d66c4166f6cab200624e72",
-			username: "bhavinvhanesha",
-			name: "Bhavin vhanesha",
-			email: "jayu@gmail.com",
-		},
-	},
+	}
 ]

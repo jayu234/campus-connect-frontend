@@ -2,18 +2,20 @@ import React from "react"
 import Header from "./Header"
 import ProfileLeftSidebar from "./ProfileLeftSidebar"
 import ProfileRightSidebar from "./ProfileRightSidebar"
-import { Grid, Box, Button, Autocomplete } from "@mui/material"
+import { Grid, Box, Button, Autocomplete, Select } from "@mui/material"
 import PropTypes from "prop-types"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import Typography from "@mui/material/Typography"
-import { useEffect, useState } from "react"
+import { BsGithub, BsLinkedin, BsTwitter } from "react-icons/bs"
 import { Divider } from "@mui/material"
 import TextField from "@mui/material/TextField"
 import MenuItem from "@mui/material/MenuItem"
 import colleges from "../data/collegeName"
 import cities from "../data/cities"
-
+import { useSelector } from "react-redux"
+import { skills as Skills } from "../data/skills"
+import SelectField from "./FormFields/SelectField"
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
 
@@ -26,8 +28,8 @@ function TabPanel(props) {
 			{...other}
 		>
 			{value === index && (
-				<Box sx={{ p: 3 }}>
-					<Typography>{children}</Typography>
+				<Box sx={{ p: 3 }} width={"100%"}>
+					<Box component={"div"}>{children}</Box>
 				</Box>
 			)}
 		</div>
@@ -74,11 +76,10 @@ const genders = [
 
 function ProfileEdit() {
 	const [value, setValue] = React.useState(1)
-
+	const { loadUser: { data: { avatar, username, firstName, lastName, email, age, phone, college, course, gender, city, skills, links } } } = useSelector((state) => state.user);
 	const handleChange = (event, newValue) => {
 		setValue(newValue)
 	}
-
 	return (
 		<>
 			<Header />
@@ -101,7 +102,6 @@ function ProfileEdit() {
 							height: 624,
 							border: "0.1rem solid #e2e8f0cc",
 							borderRadius: "20px",
-							":hover": { borderColor: "#29a9f2" },
 						}}
 					>
 						<Tabs
@@ -127,32 +127,32 @@ function ProfileEdit() {
 										height: "7.5rem",
 										borderRadius: "1rem",
 									}}
-									src="/images/z1.jpg"
-									alt="Welcome to our website"
+									src={avatar.url}
+									alt="profile_pic"
 								/>
 								<Box sx={{ marginTop: "0.3rem" }}>
-									<h3>Kashyap Bavadiya</h3>
+									<h3>{firstName + " " + lastName}</h3>
 								</Box>
 							</Box>
 							<Tab
 								label="Personal Details"
 								{...a11yProps(1)}
-								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem" }}
+								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem", fontFamily: "inherit" }}
 							/>
 							<Tab
-								label="Login Details"
+								label="Credentials"
 								{...a11yProps(2)}
-								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem" }}
+								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem", fontFamily: "inherit" }}
 							/>
 							<Tab
 								label="Education Details"
 								{...a11yProps(3)}
-								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem" }}
+								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem", fontFamily: "inherit" }}
 							/>
 							<Tab
-								label="Area of Interest"
+								label="Additional details"
 								{...a11yProps(4)}
-								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem" }}
+								sx={{ fontWeight: 500, color: "black", fontSize: "0.9rem", fontFamily: "inherit" }}
 							/>
 						</Tabs>
 						<Box sx={{ paddingLeft: "2rem" }}>
@@ -167,12 +167,35 @@ function ProfileEdit() {
 									Personal Details
 								</Typography>
 								<Divider />
-
 								<Box
 									sx={{
 										display: "flex",
 										alignItems: "center",
 										marginTop: "2rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+											width: "10rem",
+										}}
+									>
+										Username :
+									</Typography>
+									<TextField
+										disabled
+										id="outlined-required"
+										label="Required"
+										defaultValue={username}
+									/>
+								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "1rem",
 									}}
 								>
 									<Typography
@@ -189,7 +212,7 @@ function ProfileEdit() {
 										required
 										id="outlined-required"
 										label="Required"
-										defaultValue="Kashyap"
+										defaultValue={firstName}
 									/>
 								</Box>
 								<Box
@@ -213,31 +236,7 @@ function ProfileEdit() {
 										required
 										id="outlined-required"
 										label="Required"
-										defaultValue="Bavadiya"
-									/>
-								</Box>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "1rem",
-									}}
-								>
-									<Typography
-										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "10rem",
-										}}
-									>
-										Username :
-									</Typography>
-									<TextField
-										disabled
-										id="outlined-required"
-										label="Required"
-										defaultValue="Kashyapmb"
+										defaultValue={lastName}
 									/>
 								</Box>
 								<Box
@@ -257,18 +256,16 @@ function ProfileEdit() {
 									>
 										Gender :
 									</Typography>
-									<TextField
-										id="outlined-select-currency"
-										select
-										label="Select"
-										defaultValue="male"
+									<Select
+										label="Gender"
+										value={gender}
 									>
 										{genders.map((option) => (
-											<MenuItem key={option.value} value={option.value}>
+											<MenuItem key={option.value} value={option.label}>
 												{option.label}
 											</MenuItem>
 										))}
-									</TextField>
+									</Select>
 								</Box>
 								<Box
 									sx={{
@@ -290,9 +287,9 @@ function ProfileEdit() {
 									<TextField
 										required
 										id="outlined-number"
-										label="Number"
+										label="Age"
 										type="text"
-										defaultValue="20"
+										defaultValue={age}
 									/>
 								</Box>
 								<Box
@@ -556,6 +553,106 @@ function ProfileEdit() {
 									}}
 								>
 									<Button variant="contained">Save</Button>
+								</Box>
+							</TabPanel>
+							<TabPanel value={value} index={4}>
+								<Typography
+									sx={{
+										fontFamily: "inherit",
+										textAlign: "justify",
+										fontSize: "1.4rem",
+									}}
+								>
+									Additional details
+								</Typography>
+								<Divider />
+								<Box
+									sx={{
+										display: "flex",
+										width: "100%",
+										justifyContent: "space-between",
+										gap: "5rem",
+										alignItems: "center",
+										marginTop: "2rem",
+									}}
+								>
+									<Typography
+										sx={{
+											fontFamily: "inherit",
+											textAlign: "justify",
+											fontSize: "1.2rem",
+										}}
+									>
+										Skills
+									</Typography>
+									<Autocomplete
+										fullWidth
+										disablePortal
+										multiple
+										id="combo-box-demo"
+										options={Skills}
+										defaultValue={skills}
+										renderInput={(params) => (
+											<TextField {...params} label="Skills" />
+										)}
+									/>
+								</Box>
+								<Box
+									sx={{
+										width: "100%",
+										display: "flex",
+										justifyContent: "space-between",
+										gap: "5rem",
+										alignItems: "flex-start",
+										marginTop: "2rem",
+									}}
+								>
+									<Box>
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+											}}
+										>
+											Links
+										</Typography>
+									</Box>
+									<Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: "1rem" }}>
+										<Box sx={{ display: 'flex', alignItems: 'flex-end', gap: "1rem" }}>
+											<BsGithub size={20} />
+											<TextField
+												fullWidth
+												variant="standard"
+												id="github-link"
+												type="text"
+												defaultValue={links[0].url}
+												placeholder="Github profile"
+											/>
+										</Box>
+										<Box sx={{ display: 'flex', alignItems: 'flex-end', gap: "1rem" }}>
+											<BsLinkedin size={20} />
+											<TextField
+												fullWidth
+												variant="standard"
+												id="linkedin-link"
+												type="text"
+												defaultValue={links[1].url}
+												placeholder="LinkedIn profile"
+											/>
+										</Box>
+										<Box sx={{ display: 'flex', alignItems: 'flex-end', gap: "1rem" }}>
+											<BsTwitter size={20} />
+											<TextField
+												fullWidth
+												variant="standard"
+												id="twitter-link"
+												type="text"
+												defaultValue={links[2].url}
+												placeholder="Twitter profile"
+											/>
+										</Box>
+									</Box>
 								</Box>
 							</TabPanel>
 						</Box>

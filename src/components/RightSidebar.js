@@ -36,7 +36,7 @@ function RightSidebar() {
         <React.Fragment>
           {eventData.length > 0 ? eventData.map((item) => {
             return (
-              <ListItem key={item._id} sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }}>
+              <ListItem key={item._id} sx={{ cursor: "pointer", marginY: "0.5rem", borderRadius: "10px", ":hover": { backgroundColor: "#E2E8F0" } }} onClick={()=>{navigate(`/event/${item._id}`)}}>
                 <ListItemAvatar><Avatar alt={item.title+'_cover'} src={item.image.url} sx={{ width: 34, height: 34, borderRadius: "6px" }} /></ListItemAvatar>
                 <ListItemText primary={item.title} primaryTypographyProps={{ fontFamily: "inherit" }} />
               </ListItem>

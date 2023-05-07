@@ -97,7 +97,7 @@ export default function PostItem({ post }) {
 					marginBottom: "0rem",
 					marginTop: "1rem",
 					height: 500,
-					width: 1000,
+					width: 800,
 					maxHeight: { xs: 400, md: 1000 },
 					maxWidth: { xs: 400, md: 862 },
 				}}

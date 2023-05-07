@@ -1,20 +1,8 @@
-import React from "react"
-import PropTypes from "prop-types"
-import {
-	Box,
-	Grid,
-	Modal,
-	Tabs,
-	Tab,
-	Typography,
-	Avatar,
-	TextField,
-	Button,
-	Divider,
-	IconButton,
-} from "@mui/material"
-import ImageIcon from "@mui/icons-material/Image"
+import React, { useEffect, useState } from "react"
+import { Box, Grid, Modal, Typography, Avatar, TextField, Button, IconButton, CircularProgress } from "@mui/material"
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded"
+import { useDispatch, useSelector } from "react-redux"
+import { createAnswer, resetNewAnswerState } from "../store/answerSlice"
 
 const style = {
 	position: "absolute",
@@ -28,45 +16,22 @@ const style = {
 	borderRadius: "10px",
 	p: 2,
 }
-function TabPanel(props) {
-	const { children, value, index, ...other } = props
-	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			id={`simple-tabpanel-${index}`}
-			aria-labelledby={`simple-tab-${index}`}
-			{...other}
-		>
-			{value === index && (
-				<Box sx={{ p: 3 }}>
-					<Typography component={"div"}>{children}</Typography>
-				</Box>
-			)}
-		</div>
-	)
-}
 
-TabPanel.propTypes = {
-	children: PropTypes.node,
-	index: PropTypes.number.isRequired,
-	value: PropTypes.number.isRequired,
-}
-
-function a11yProps(index) {
-	return {
-		id: `simple-tab-${index}`,
-		"aria-controls": `simple-tabpanel-${index}`,
+function ProfileQuestionModal({ open, setOpen, doubt, answerCount = 0, setAnswerCount }) {
+	const [text, setText] = useState("");
+	const dispatch = useDispatch();
+	const { newAnswer: { isLoading, success, isError, message } } = useSelector((state) => state.answer);
+	const handleAnswerSubmit = () => {
+		const data = { doubt: doubt._id, content: text }
+		dispatch(createAnswer(data));
 	}
-}
-
-function ProfileQuestionModal({ open, tabInd, setOpen }) {
-	const [value, setValue] = React.useState(tabInd)
-	const [text, setText] = React.useState("")
-	const handleChange = (event, newValue) => {
-		setValue(newValue)
-	}
-
+	useEffect(() => {
+		if (success) {
+			setOpen(false);
+			setAnswerCount(answerCount + 1);
+			dispatch(resetNewAnswerState());
+		}
+	}, [isLoading])
 	return (
 		<Modal
 			open={open}
@@ -78,11 +43,7 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 		>
 			<Box sx={style}>
 				<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-					<IconButton
-						onClick={() => {
-							setOpen(false)
-						}}
-					>
+					<IconButton onClick={() => { setOpen(false) }}>
 						<CloseRoundedIcon sx={{ width: 20, height: 20 }} />
 					</IconButton>
 				</Box>
@@ -91,23 +52,21 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 						<Grid item component={"aside"} xs={1.1}>
 							<Avatar
 								alt="Profile pic"
-								src="/images/Cryst3l.jpg"
+								src={doubt.author.avatar.url}
 								sx={{ cursor: "pointer" }}
 							/>
 						</Grid>
 						<Grid item xs={7.5} sx={{ marginTop: "0.5rem" }}>
-							<Box sx={{ fontSize: "15px" }}>
-								<strong>Kashyap Bavadiya</strong>
-							</Box>
+							<Typography variant="body1" fontFamily={"inherit"}>
+								{doubt.author.firstName + " " + doubt.author.lastName}
+							</Typography>
 						</Grid>
 					</Grid>
 
 					<Box sx={{ marginTop: "1rem", fontSize: "18px" }}>
-						<strong>
-							Is Competitive Programming hard? Why my rating stuck around 3
-							months? plz give me tips for regarding resources and technical for
-							preparation
-						</strong>
+						<Typography variant="h6" fontFamily={'inherit'} fontWeight={500}>
+							{doubt.content}
+						</Typography>
 					</Box>
 
 					<Box
@@ -129,6 +88,15 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 							variant="standard"
 							placeholder="Write your answer"
 							sx={{ borderRadius: "16px" }}
+							InputProps={{
+								sx: {
+									"& .MuiInputBase-input": {
+										textTransform: 'none',
+										fontFamily: "'Inter', sans-serif",
+										fontSize: "16px"
+									}
+								}
+							}}
 						/>
 					</Box>
 				</Box>
@@ -138,6 +106,7 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 						justifyContent: "flex-end",
 						columnGap: "1rem",
 						marginTop: "0.5rem",
+						position: 'relative'
 					}}
 				>
 					<Button
@@ -149,15 +118,21 @@ function ProfileQuestionModal({ open, tabInd, setOpen }) {
 					>
 						Cancel
 					</Button>
-					<Button
-						disabled={!text.length}
-						onClick={() => {
-							setOpen(false)
+					{isLoading && <CircularProgress
+						size={24}
+						sx={{
+							position: "absolute",
+							bottom: "10%",
+							right: "3%",
 						}}
+					/>}
+					<Button
+						disabled={!text.length || isLoading}
+						onClick={handleAnswerSubmit}
 						variant="contained"
 						sx={{ textTransform: "none" }}
 					>
-						Done
+						Post
 					</Button>
 				</Box>
 			</Box>

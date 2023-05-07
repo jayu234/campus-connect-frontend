@@ -48,7 +48,7 @@ const settings = ["Profile", "Edit profile", "Logout"]
 function Navbar() {
 	const [anchorElUser, setAnchorElUser] = React.useState(null)
 	const dispatch = useDispatch();
-	const {loadUser: { data: {avatar} }} = useSelector((state)=>state.user);
+	const { loadUser: { data: { avatar } } } = useSelector((state) => state.user);
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
 	};
@@ -60,7 +60,10 @@ function Navbar() {
 		if (setting === "Profile") {
 			navigate("/profile");
 		}
-		if(setting === "Logout"){
+		if (setting === "Edit profile") {
+			navigate("/profile/edit");
+		}
+		if (setting === "Logout") {
 			dispatch(userLogout());
 		}
 		handleCloseUserMenu();
@@ -194,12 +197,12 @@ function Navbar() {
 								<CreateIcon sx={{ fontSize: 18, marginRight: "0.35rem" }} />
 								Ask Doubt
 							</Button>
-							<IconButton>
+							{/* <IconButton>
 								<DarkModeIcon />
 							</IconButton>
 							<IconButton>
 								<NotificationsIcon />
-							</IconButton>
+							</IconButton> */}
 							<IconButton onClick={handleOpenUserMenu}>
 								<Avatar alt="Profile pic" src={avatar?.url} />
 							</IconButton>
@@ -220,8 +223,8 @@ function Navbar() {
 								onClose={handleCloseUserMenu}
 							>
 								{settings.map((setting) => (
-									<MenuItem key={setting} onClick={() => { handleAction(setting) }}>
-										<Typography textAlign="center">{setting}</Typography>
+									<MenuItem key={setting} onClick={() => { handleAction(setting) }} sx={{ textTransform: 'none', fontFamily: 'inherit' }}>
+										<Typography fontFamily={"inherit"} textAlign="center">{setting}</Typography>
 									</MenuItem>
 								))}
 							</Menu>

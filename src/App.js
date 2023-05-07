@@ -61,7 +61,7 @@ function App() {
 					<Route exact path="/topic/:id" element={<Topic />} />
 				</Route>
 				<Route exact path="/question" element={<AnswerPage />} />
-				<Route exact path="/oneevent" element={<EventPage />} />
+				<Route exact path="/event/:id" element={<EventPage />} />
 				<Route exact path="/question/:id" element={<AnswerPage />} />
 				{/* <Route exact path="/login" element={<Login />} /> */}
 				<Route exact path="/signup" element={<Signup />} />

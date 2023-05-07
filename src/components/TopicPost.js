@@ -3,6 +3,8 @@ import { Grid, Box, Avatar, TextField, Button, Divider, Typography } from "@mui/
 import TopicPostItem from "./TopicPostItem"
 import { useSelector } from "react-redux"
 import ProfileQuestionComponent from "./ProfileQuestionComponent"
+import AnswerPageComponent from "./AnswerPageComponent"
+import AnswerPost from "./AnswerPost"
 
 function TopicPost() {
 	const { topic: { data } } = useSelector((state) => state.topic);
@@ -26,7 +28,7 @@ function TopicPost() {
 			<Box>
 				{newPosts.length > 0 ? newPosts.map((item) => {
 					if (item?.type === "doubt") {
-						return <ProfileQuestionComponent key={item._id} doubt={item} />
+						return <AnswerPost key={item._id} item={item} />
 					}
 					return <TopicPostItem key={item._id} post={item} />
 				}) : <Typography align="center" fontFamily="inherit">

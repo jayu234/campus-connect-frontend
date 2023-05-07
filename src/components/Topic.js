@@ -1,41 +1,35 @@
 import React, { useEffect, useState } from "react"
 import Box from "@mui/material/Box"
-import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
-import CardContent from "@mui/material/CardContent"
 import CardActions from "@mui/material/CardActions"
 import Avatar from "@mui/material/Avatar"
 import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
 import { Button, CircularProgress } from "@mui/material"
-import { topics } from "../data/topics"
 import CreateIcon from "@mui/icons-material/Create"
 import { FiPlus } from "react-icons/fi"
-import { BsCheck2 } from "react-icons/bs"
+import { BsCheck2, BsLink45Deg } from "react-icons/bs"
 import { IoPeopleOutline } from "react-icons/io5"
 import { GrArticle } from "react-icons/gr"
-import { TiFlashOutline } from "react-icons/ti"
+import { BsTwitter } from "react-icons/bs"
 import ReplayIcon from '@mui/icons-material/Replay';
-import { color, fontSize } from "@mui/system"
 import TopicPost from "./TopicPost"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getTopicDetails } from "../store/topicSlice"
 import axios from "axios"
 import Alert from "./Alert"
+import MainModal from "./MainModal"
 
 function Topic() {
 	const { id } = useParams();
 	const dispatch = useDispatch();
 	const { topic: { data, isLoading, success, isError } } = useSelector((state) => state.topic);
 	const { loadUser: { data: { _id } } } = useSelector((state) => state.user);
-	const temp1 = topics.map((item) => ({ ...item, following: true }))
-	const temp2 = topics.map((item) => ({ ...item, following: false }))
-	const [followingTopics, setFollowingTopics] = React.useState(temp1)
 	const [open, setOpen] = useState(false);
+	const [openSnack, setOpenSnack] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
-
+	const [openModal, setOpenModal] = useState(false);
 	const [follow, setFollow] = React.useState(false)
 
 	const handleFollowingBtnChange = async (follow) => {
@@ -75,6 +69,7 @@ function Topic() {
 	}, [isLoading])
 	return (
 		<>
+			{openModal && <MainModal open={openModal} setOpen={setOpenModal} tabInd={0} />}
 			{_renderContent()}
 			<Box
 				sx={{
@@ -174,22 +169,23 @@ function Topic() {
 						</Button>
 						<Button
 							variant="contained"
-							component="p"
 							sx={{
 								marginX: 1,
 								backgroundColor: "#2563EB",
 								borderRadius: "20px",
+								fontFamily: "inherit",
 								textTransform: "none",
 								boxShadow: "none",
 								":hover": { boxShadow: "none" },
 							}}
+							startIcon={<CreateIcon fontSize="18" />}
+							onClick={() => { setOpenModal(true) }}
 						>
-							<CreateIcon sx={{ fontSize: 18, marginRight: "0.35rem" }} />
 							Add An Article
 						</Button>
 					</CardActions>
 					<Box sx={{ marginTop: "8px", display: "flex" }}>
-						<Box sx={{ display: "flex", marginX: "16px" }}>
+						<Box sx={{ display: "flex", alignItems: "center", marginX: "16px" }}>
 							<Box
 								sx={{ display: "flex", alignItems: "center", marginRight: "5px" }}
 							>
@@ -197,7 +193,7 @@ function Topic() {
 							</Box>
 							{data.followers.length} Followers
 						</Box>
-						<Box sx={{ display: "flex", marginX: "16px" }}>
+						<Box sx={{ display: "flex", alignItems: "center", marginX: "16px" }}>
 							<Box
 								sx={{ display: "flex", alignItems: "center", marginRight: "5px" }}
 							>
@@ -205,15 +201,12 @@ function Topic() {
 							</Box>
 							{data.posts.length + data.doubts.length} Articles
 						</Box>
-						<Box sx={{ display: "flex", marginX: "16px" }}>
-							<Box
-								sx={{ display: "flex", alignItems: "center", marginRight: "5px" }}
-							>
-								<TiFlashOutline />
-							</Box>
-							5 Post Today
+						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginX: "16px" }}>
+							<a href={`https://twitter.com/intent/tweet?text=${process.env.REACT_APP_HOST}/topic/${data._id}`} rel="noopener noreferrer" target="_blank" aria-label="Share on Twitter"><IconButton sx={{ ":hover": { backgroundColor: "#E2E8F0" } }}><BsTwitter size={20} color="#64748B" /></IconButton></a>
+							<IconButton sx={{ ":hover": { backgroundColor: "#E2E8F0" } }} onClick={() => { navigator.clipboard.writeText(`${process.env.REACT_APP_HOST}/topic/${data._id}`); setOpenSnack(true); setTimeout(()=>{setOpenSnack(false)},3000) }}><BsLink45Deg size={25} color="#64748B" /></IconButton>
 						</Box>
 					</Box>
+					{openSnack && <Alert message={"Link Copied Successfully"} severity={"success"} verticalPos={"bottom"} horizontalPos={"right"} duration={1500} />}
 				</Box>
 			)
 		}

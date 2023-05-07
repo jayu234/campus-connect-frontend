@@ -1,17 +1,16 @@
 export const skills = [
-	{
-		skill: "Web Developement",
-	},
-	{
-		skill: "App Developement",
-	},
-	{
-		skill: "Java language",
-	},
-	{
-		skill: "Python Programming",
-	},
-	{
-		skill: "Competitive Programming",
-	},
+	"C/C++",
+	"Java", 
+	"Python",
+	"MERN",
+	"ReactJs",
+	"NodeJs",
+	"ExpressJs",
+	"NextJs",
+	"MongoDB",
+	"NestJs",
+	"React Native",
+	"Android",
+	"Web Developement",
+	"App Developement"
 ]
