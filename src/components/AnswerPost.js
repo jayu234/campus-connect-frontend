@@ -114,7 +114,7 @@ function AnswerPost({ item }) {
 					{likes > 0 && <Typography color={"black"} component={"span"} variant="body1" fontFamily={"inherit"} marginRight={"1rem"}>
 						{likes}
 					</Typography>}
-					<Button
+					{author._id !== loadUser.data._id && <Button
 						variant="contained"
 						sx={{
 							marginX: 1,
@@ -134,7 +134,7 @@ function AnswerPost({ item }) {
 						}}
 					>
 						Give Answer
-					</Button>
+					</Button>}
 				</Box>
 				<Divider />
 			</Card>
