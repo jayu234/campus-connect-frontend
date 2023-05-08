@@ -21,7 +21,7 @@ function Home() {
                     <Grid item xs={7}>
                         <Outlet />
                     </Grid>
-                    <Grid item xs={2.5}>
+                    <Grid item  xs={2.5}>
                         <RightSidebar />
                     </Grid>
                 </Grid>
