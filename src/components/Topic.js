@@ -31,12 +31,14 @@ function Topic() {
 	const [alertMessage, setAlertMessage] = useState("");
 	const [openModal, setOpenModal] = useState(false);
 	const [follow, setFollow] = React.useState(false)
-
+	const [followerCnt, setFollowerCnt] = useState(0);
 	const handleFollowingBtnChange = async (follow) => {
 		setFollow(!follow);
 		if (follow) {
 			axios.defaults.withCredentials = true
-			await axios.post(`${process.env.REACT_APP_BASE_URL}/topic/follow/${data._id}`)
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/topic/follow/${data._id}`).then(()=>{
+				setFollowerCnt(followerCnt - 1);
+			})
 				.catch(() => {
 					setAlertMessage(`Failed to unfollow ${data.label}`);
 					setOpen(true);
@@ -45,7 +47,9 @@ function Topic() {
 		}
 		else {
 			axios.defaults.withCredentials = true
-			await axios.post(`${process.env.REACT_APP_BASE_URL}/topic/follow/${data._id}`)
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/topic/follow/${data._id}`).then(()=>{
+				setFollowerCnt(followerCnt + 1);
+			})
 				.catch(() => {
 					setAlertMessage(`Failed to follow ${data.label}`);
 					setOpen(true);
@@ -60,6 +64,7 @@ function Topic() {
 
 	useEffect(() => {
 		if (success) {
+			setFollowerCnt(data.followers.length);
 			if (data.followers.includes(_id)) {
 				setFollow(true);
 			} else {
@@ -191,7 +196,7 @@ function Topic() {
 							>
 								<IoPeopleOutline />
 							</Box>
-							{data.followers.length} Followers
+							{followerCnt} Followers
 						</Box>
 						<Box sx={{ display: "flex", alignItems: "center", marginX: "16px" }}>
 							<Box
@@ -203,7 +208,7 @@ function Topic() {
 						</Box>
 						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginX: "16px" }}>
 							<a href={`https://twitter.com/intent/tweet?text=${process.env.REACT_APP_HOST}/topic/${data._id}`} rel="noopener noreferrer" target="_blank" aria-label="Share on Twitter"><IconButton sx={{ ":hover": { backgroundColor: "#E2E8F0" } }}><BsTwitter size={20} color="#64748B" /></IconButton></a>
-							<IconButton sx={{ ":hover": { backgroundColor: "#E2E8F0" } }} onClick={() => { navigator.clipboard.writeText(`${process.env.REACT_APP_HOST}/topic/${data._id}`); setOpenSnack(true); setTimeout(()=>{setOpenSnack(false)},3000) }}><BsLink45Deg size={25} color="#64748B" /></IconButton>
+							<IconButton sx={{ ":hover": { backgroundColor: "#E2E8F0" } }} onClick={() => { navigator.clipboard.writeText(`${process.env.REACT_APP_HOST}/topic/${data._id}`); setOpenSnack(true); setTimeout(() => { setOpenSnack(false) }, 3000) }}><BsLink45Deg size={25} color="#64748B" /></IconButton>
 						</Box>
 					</Box>
 					{openSnack && <Alert message={"Link Copied Successfully"} severity={"success"} verticalPos={"bottom"} horizontalPos={"right"} duration={1500} />}

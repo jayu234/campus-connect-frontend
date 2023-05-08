@@ -356,7 +356,7 @@ function MainModal({ open, tabInd, setOpen }) {
                 <Divider />
                 {
                     value === 0 ? <Box sx={{ display: 'flex', justifyContent: 'flex-end', columnGap: '1rem', marginTop: '0.5rem', position: 'relative' }}>
-                        <Button onClick={() => { setOpen(false) }} variant='text' sx={{ textTransform: 'none' }}>Cancle</Button>
+                        <Button onClick={() => { setOpen(false) }} variant='text' sx={{ textTransform: 'none' }}>Cancel</Button>
                         {newDoubt.isLoading && <CircularProgress
                             size={24}
                             sx={{
@@ -385,7 +385,7 @@ function MainModal({ open, tabInd, setOpen }) {
                                 </label>
                             </div>
                             <div style={{ position: 'relative' }}>
-                                <Button onClick={() => { setOpen(false) }} variant='text' sx={{ marginRight: '0.5rem', textTransform: 'none' }}>Cancle</Button>
+                                <Button onClick={() => { setOpen(false) }} variant='text' sx={{ marginRight: '0.5rem', textTransform: 'none' }}>Cancel</Button>
                                 {newPost.isLoading && <CircularProgress
                                     size={24}
                                     sx={{

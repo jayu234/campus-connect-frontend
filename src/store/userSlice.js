@@ -30,6 +30,13 @@ const initialState = {
     success: false,
     isError: false,
     message: '',
+  },
+  editUser: {
+    user: {},
+    isLoading: false,
+    success: false,
+    isError: false,
+    message: '',
   }
 }
 
@@ -38,6 +45,18 @@ export const userSignup = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       return await authServise.signup(user)
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+)
+
+export const updateProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (user, thunkAPI) => {
+    try {
+      return await authServise.editUser(user)
     } catch (error) {
       const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -90,6 +109,12 @@ const userSlice = createSlice({
   reducers: {
     resetAuth: (state) => {
       state = initialState
+    },
+    resetEditState: (state) => {
+      state.editUser.isLoading = false
+      state.editUser.success = false
+      state.editUser.isError = false
+      state.editUser.message = ''
     }
   },
   extraReducers: (builder) => {
@@ -105,12 +130,33 @@ const userSlice = createSlice({
         state.signup.success = true
         state.signup.isError = false
         state.signup.message = ''
+        state.isAuthenticated = false
       })
       .addCase(userSignup.rejected, (state, action) => {
         state.signup.isLoading = false
         state.signup.success = false
         state.signup.isError = true
         state.signup.message = action.payload
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.editUser.isLoading = true
+        state.editUser.success = false
+        state.editUser.isError = false
+        state.editUser.message = ''
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.editUser.isLoading = false
+        state.editUser.success = true
+        state.editUser.isError = false
+        state.editUser.message = ''
+        state.loadUser.data = action.payload.result
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.editUser.isLoading = false
+        state.editUser.success = false
+        state.editUser.isError = true
+        state.editUser.message = action.payload
+        state.editUser.user = {}
       })
       .addCase(userLogin.pending, (state) => {
         state.login.isLoading = true
@@ -172,4 +218,5 @@ const userSlice = createSlice({
   }
 })
 
+export const { resetEditState } = userSlice.actions;
 export default userSlice.reducer;

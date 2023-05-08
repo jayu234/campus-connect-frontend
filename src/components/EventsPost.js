@@ -1,34 +1,48 @@
-import React from "react"
-import { Grid, Box, Avatar, TextField, Button, Divider } from "@mui/material"
-import LiveHelpIcon from "@mui/icons-material/LiveHelp"
-import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer"
-import RateReviewIcon from "@mui/icons-material/RateReview"
-import MainModal from "./MainModal"
-import { webdevelopment } from "../data/webdevelopment"
-import { events } from "../data/events"
-import PostItem from "./PostItem"
-import TopicPostItem from "./TopicPostItem"
+import React, { useEffect, useState } from "react"
+import { Grid, Box, Avatar, TextField, Button, Divider, CircularProgress, Typography } from "@mui/material"
+import ReplayIcon from '@mui/icons-material/Replay';
 import EventsPostItem from "./EventsPostItem"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllEvents } from "../store/eventSlice";
 
 function EventsPost() {
-	const [open, setOpen] = React.useState(false)
-	const [tabInd, setTabInd] = React.useState(0)
-
+	const { allEvents: { data, isLoading, isError, message, success } } = useSelector((state) => state.event);
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(getAllEvents())
+	}, [dispatch])
 	return (
 		<>
 			<Box>
-				{[
-					events.map((item) => {
-						return (
-							<>
-								<EventsPostItem key={item._id} post={item} />
-							</>
-						)
-					}),
-				]}
+				{_renderContent()}
 			</Box>
 		</>
 	)
+	function _renderContent() {
+		if (isLoading) {
+			<Box component={'div'} mt={'1rem'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+				<CircularProgress size={30} />
+				<Typography>Loading...</Typography>
+			</Box>
+		}
+		else if (success) {
+			return (
+				data.map((item) => {
+					return (
+						<EventsPostItem key={item._id} post={item} />
+					)
+				})
+			)
+		}
+		else if (isError) {
+			return (
+				<Box component={'div'} mt={'1rem'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+					<Typography align='center'>Sorry, something went wrong.<br />Please refresh the page and try again.</Typography>
+					<Button variant="contained" sx={{ marginTop: "0.5rem", textTransform: 'none', borderRadius: '50px' }} startIcon={<ReplayIcon fontSize='20px' />} onClick={() => { window.location.reload() }}>Refresh</Button>
+				</Box>
+			)
+		}
+	}
 }
 
 export default EventsPost

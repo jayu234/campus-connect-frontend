@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, {useState} from "react"
 import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
 import CardContent from "@mui/material/CardContent"
@@ -6,15 +6,12 @@ import CardActions from "@mui/material/CardActions"
 import Avatar from "@mui/material/Avatar"
 import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"
-import ThumbDownIcon from "@mui/icons-material/ThumbDown"
-import { BsHeart } from "react-icons/bs"
+import { BsHeart, BsHeartFill } from "react-icons/bs"
 
 import { Button, Divider, Menu, MenuItem } from "@mui/material"
-import EditIcon from "@mui/icons-material/Edit"
-import ShareIcon from "@mui/icons-material/Share"
 import { Box } from "@mui/system"
+import axios from "axios"
+import { useSelector } from "react-redux"
 
 const months = [
 	"January",
@@ -32,16 +29,31 @@ const months = [
 ]
 
 export default function TopicPostItem({ post }) {
-	const [anchorEl, setAnchorEl] = React.useState(null)
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget)
+	const { loadUser } = useSelector((state) => state.user);
+	const userId = loadUser.data._id;
+	const [isLiked, setIsLiked] = useState(post.likes.includes(userId));
+	const [likes, setLikes] = useState(post.likes.length);
+	const handleToggleLikeUnlike = async () => {
+		if (isLiked) {
+			setIsLiked(!isLiked);
+			setLikes(likes - 1);
+			axios.defaults.withCredentials = true
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/post/like/${post._id}`).catch((err) => {
+				setLikes(likes + 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to unlike post", err);
+			});
+		} else {
+			setIsLiked(!isLiked);
+			setLikes(likes + 1);
+			axios.defaults.withCredentials = true
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/post/like/${post._id}`).catch((err) => {
+				setLikes(likes - 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to like post", err);
+			});
+		}
 	}
-
-	const handleClose = () => {
-		setAnchorEl(null)
-	}
-
 	const date = new Date(post.createdAt)
 	return (
 		<Card
@@ -62,9 +74,8 @@ export default function TopicPostItem({ post }) {
 					/>
 				}
 				title={post.author.firstName + " " + post.author.lastName}
-				subheader={`${post.author.username} ~ ${
-					months[date.getMonth()]
-				} ${date.getDate()}, ${date.getFullYear()}`}
+				subheader={`${post.author.username} ~ ${months[date.getMonth()]
+					} ${date.getDate()}, ${date.getFullYear()}`}
 				sx={{ padding: "1rem 1.5rem 0.7rem 1.5rem" }}
 				subheaderTypographyProps={{ fontFamily: "inherit", fontSize: "0.9rem" }}
 				titleTypographyProps={{
@@ -88,7 +99,7 @@ export default function TopicPostItem({ post }) {
 					{post.content}
 				</Typography>
 			</CardContent>
-			<Box
+			{(post.images.length > 0) && (<Box
 				component="img"
 				sx={{
 					marginBottom: "0rem",
@@ -99,25 +110,19 @@ export default function TopicPostItem({ post }) {
 					maxWidth: { xs: 400, md: 1000 },
 				}}
 				alt="The house from the offer."
-				src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-			/>
+				src={post.images[0].url}
+			/>)}
 			<CardActions
 				sx={{ display: "flex", padding: "0.3rem 2rem" }}
 				disableSpacing
 			>
 				<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-					<Button
-						component={"div"}
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							cursor: "pointer",
-							fontSize: "1.1rem",
-						}}
-						startIcon={<BsHeart size={23} />}
-					>
-						{post.likes.length > 0 && post.likes.length}
-					</Button>
+					<IconButton color={"black"} onClick={handleToggleLikeUnlike}>
+						{isLiked ? <BsHeartFill size={23} /> : <BsHeart size={23} />}
+					</IconButton>
+					{likes > 0 && <Typography color={"black"} component={"span"} variant="body1" fontFamily={"inherit"} marginRight={"1rem"}>
+						{likes}
+					</Typography>}
 				</Box>
 			</CardActions>
 			<Divider />

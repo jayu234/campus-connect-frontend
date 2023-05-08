@@ -45,7 +45,7 @@ const CustomWidthTooltip = styled(({ className, ...props }) => (
 
 const settings = ["Profile", "Edit profile", "Logout"]
 
-function Navbar() {
+function Navbar({ iconShow = true, btnShow = true }) {
 	const [anchorElUser, setAnchorElUser] = React.useState(null)
 	const dispatch = useDispatch();
 	const { loadUser: { data: { avatar } } } = useSelector((state) => state.user);
@@ -153,7 +153,7 @@ function Navbar() {
 							</Typography>
 						</Box>
 						{/* Navigation Navbar */}
-						<Box sx={{ flexGrow: 1 }}>
+						 <Box sx={{ flexGrow: 1, visibility: iconShow ? 'visible' : 'hidden' }}>
 							{iconBtns.map((item) => {
 								return (
 									<CustomWidthTooltip
@@ -178,7 +178,7 @@ function Navbar() {
 						{/* Navigation Navbar End */}
 
 						<Box sx={{ flexGrow: 0, marginX: 2 }}>
-							<Button
+							{btnShow && <Button
 								variant="contained"
 								component="p"
 								sx={{
@@ -188,6 +188,7 @@ function Navbar() {
 									textTransform: "none",
 									boxShadow: "none",
 									fontFamily: "inherit",
+									visibility: btnShow ? 'visible' : 'hidden',
 									":hover": { boxShadow: "none" },
 								}}
 								onClick={() => {
@@ -196,7 +197,7 @@ function Navbar() {
 							>
 								<CreateIcon sx={{ fontSize: 18, marginRight: "0.35rem" }} />
 								Ask Doubt
-							</Button>
+							</Button>}
 							{/* <IconButton>
 								<DarkModeIcon />
 							</IconButton>

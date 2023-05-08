@@ -20,10 +20,11 @@ import { Grid } from "react-loader-spinner"
 function App() {
 	const { isAuthenticated } = useSelector((state) => state.user);
 	const { loadUser: { isLoading } } = useSelector((state) => state.user);
+	const { signup } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	React.useEffect(() => {
 		dispatch(loadUser());
-	}, [dispatch])
+	}, [dispatch, signup])
 	function _renderComponent() {
 		if (isLoading) {
 			return (

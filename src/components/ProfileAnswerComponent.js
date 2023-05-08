@@ -38,7 +38,6 @@ function ProfileAnswerComponent({ post }) {
 	}
 
 	const date = new Date(post.createdAt)
-
 	return (
 		<>
 			<Card
@@ -51,54 +50,22 @@ function ProfileAnswerComponent({ post }) {
 				}}
 			>
 				<CardHeader
-					avatar={<Avatar src={`/images/${post.dp}.jpg`} aria-label="recipe" />}
-					action={
-						<IconButton
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={handleMenu}
-							aria-label="settings"
-						>
-							<MoreVertIcon />
-						</IconButton>
-					}
-					title={post.name}
-					subheader={post.date}
+					avatar={<Avatar src={post.author.avatar.url} aria-label="recipe" />}
+					title={post.author.firstName + " " + post.author.lastName}
+					subheader={`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
 					sx={{ padding: "1rem 1rem 0rem 1.4rem" }}
-					subheaderTypographyProps={{ fontFamily: "inherit" }}
-					titleTypographyProps={{ fontFamily: "inherit", fontWeight: "3" }}
+					subheaderTypographyProps={{ textTransform: "none", fontFamily: "inherit" }}
+					titleTypographyProps={{ textTransform: "none", fontFamily: "inherit", fontWeight: "3" }}
 				/>
 				<CardContent sx={{ padding: "0.5rem 1.5rem 0rem 1.5rem" }}>
-					<Typography variant="subtitle1" sx={{ fontFamily: "inherit" }}>
-						<strong>{post.question}</strong>
-					</Typography>
 					<Typography
 						variant="body1"
 						color="text.secondary"
-						sx={{ fontFamily: "inherit" }}
+						sx={{ textTransform: "none", fontFamily: "inherit" }}
 					>
-						{post.answer}
+						{post.content}
 					</Typography>
 				</CardContent>
-				<Box
-					sx={{
-						padding: "0.5rem 1.5rem 1rem 1.5rem",
-						display: "flex",
-						alignItems: "center",
-						width: "100%",
-					}}
-				>
-					<Button
-						component={"div"}
-						sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-						startIcon={<ThumbUpIcon fontSize="small" />}
-					>
-						{post.upvote > 0 && post.upvote}
-					</Button>
-					<Button startIcon={<ThumbDownIcon fontSize="small" />}>
-						{post.downvote > 0 && post.downvote}
-					</Button>
-				</Box>
 			</Card>
 		</>
 	)

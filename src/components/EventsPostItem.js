@@ -9,12 +9,15 @@ import Typography from "@mui/material/Typography"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
 import ThumbUpIcon from "@mui/icons-material/ThumbUp"
 import ThumbDownIcon from "@mui/icons-material/ThumbDown"
-import { BsHeart } from "react-icons/bs"
+import { BsHeart, BsHeartFill } from "react-icons/bs"
 
 import { Button, Divider, Menu, MenuItem } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import ShareIcon from "@mui/icons-material/Share"
 import { Box } from "@mui/system"
+import { useSelector } from "react-redux"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const months = [
 	"January",
@@ -32,17 +35,35 @@ const months = [
 ]
 
 export default function EventsPostItem({ post }) {
-	const [anchorEl, setAnchorEl] = React.useState(null)
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget)
+	const { loadUser } = useSelector((state) => state.user);
+	const userId = loadUser.data._id;
+	const [isLiked, setIsLiked] = React.useState(post.likes.includes(userId));
+	const [likes, setLikes] = React.useState(post.likes.length);
+	const navigate = useNavigate();
+	const handleToggleLikeUnlike = async () => {
+		if (isLiked) {
+			setIsLiked(!isLiked);
+			setLikes(likes - 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/event/like/${post._id}`).catch((err) => {
+				setLikes(likes + 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to unlike post", err);
+			});
+		} else {
+			setIsLiked(!isLiked);
+			setLikes(likes + 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/event/like/${post._id}`).catch((err) => {
+				setLikes(likes - 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to like post", err);
+			});
+		}
 	}
-
-	const handleClose = () => {
-		setAnchorEl(null)
-	}
-
-	const date = new Date(post.date)
+	const date = new Date(post.createdAt);
+	const options = { hour: 'numeric', hour12: true };
+	const timeString = date.toLocaleString('en-US', options);
+	const [time, period] = timeString.split(' ');
+	const formattedTime = `${time} ${period}`;
 	return (
 		<Card
 			sx={{
@@ -60,28 +81,21 @@ export default function EventsPostItem({ post }) {
 							fontFamily: "inherit",
 							fontWeight: "500",
 							fontSize: "1.5rem",
+							cursor: "pointer"
 						}}
+						onClick={()=>{navigate(`/event/${post._id}`)}}
 					>
 						{post.title}
 					</Typography>
 					<Typography
 						sx={{
 							fontFamily: "inherit",
-							fontSize: "1.3rem",
-							marginTop: "0.5rem",
-						}}
-					>
-						{post.collegename}
-					</Typography>
-					<Typography
-						sx={{
-							fontFamily: "inherit",
 							color: "black",
 							fontSize: "1.1rem",
 							marginTop: "0.5rem",
 						}}
 					>
-						Time : {post.time}
+						Time : {formattedTime}
 					</Typography>
 					<Typography
 						sx={{
@@ -90,10 +104,7 @@ export default function EventsPostItem({ post }) {
 							fontSize: "1.1rem",
 						}}
 					>
-						Date :
-						{` ${
-							months[date.getMonth()]
-						} ${date.getDate()}, ${date.getFullYear()}`}
+						Date : {` ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
 					</Typography>
 				</CardContent>
 
@@ -102,22 +113,16 @@ export default function EventsPostItem({ post }) {
 					disableSpacing
 				>
 					<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-						<Button
-							component={"div"}
-							sx={{
-								display: "flex",
-								alignItems: "center",
-								cursor: "pointer",
-								fontSize: "1.1rem",
-							}}
-							startIcon={<BsHeart size={23} />}
-						>
-							{post.likes > 0 && post.likes}
-						</Button>
+						<IconButton color={"black"} onClick={handleToggleLikeUnlike}>
+							{isLiked ? <BsHeartFill size={23} color='#757575' /> : <BsHeart size={23} color='#757575' />}
+						</IconButton>
+						{likes > 0 && <Typography color={"black"} component={"span"} variant="body1" fontFamily={"inherit"} marginRight={"1rem"}>
+							{likes}
+						</Typography>}
 					</Box>
 				</CardActions>
 			</Box>
-			<Box
+			{post.image && <Box
 				component="img"
 				sx={{
 					height: 200,
@@ -129,7 +134,7 @@ export default function EventsPostItem({ post }) {
 				}}
 				alt="The house from the offer."
 				src={post.image.url}
-			/>
+			/>}
 		</Card>
 	)
 }

@@ -20,7 +20,7 @@ function AnswerPage() {
 	}, [dispatch, id])
 	return (
 		<>
-			<Header />
+			<Header iconShow={false}/>
 			<Grid
 				container
 				spacing={2}

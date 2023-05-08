@@ -1,8 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Header from "./Header"
-import ProfileLeftSidebar from "./ProfileLeftSidebar"
-import ProfileRightSidebar from "./ProfileRightSidebar"
-import { Grid, Box, Button, Autocomplete, Select } from "@mui/material"
+import { Grid, Box, Button, Autocomplete, Select, FormControl, InputLabel, CircularProgress, IconButton } from "@mui/material"
 import PropTypes from "prop-types"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
@@ -13,9 +11,12 @@ import TextField from "@mui/material/TextField"
 import MenuItem from "@mui/material/MenuItem"
 import colleges from "../data/collegeName"
 import cities from "../data/cities"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { skills as Skills } from "../data/skills"
-import SelectField from "./FormFields/SelectField"
+import { loadUser, resetEditState, updateProfile } from "../store/userSlice"
+import Alert from "./Alert"
+import { Camera, CameraAlt } from "@mui/icons-material"
+
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
 
@@ -59,30 +60,79 @@ function a11yProps(index) {
 	}
 }
 
-const genders = [
-	{
-		value: "male",
-		label: "Male",
-	},
-	{
-		value: "female",
-		label: "Female",
-	},
-	{
-		value: "other",
-		label: "Other",
-	},
-]
-
 function ProfileEdit() {
-	const [value, setValue] = React.useState(1)
+	const [activeTab, setActiveTab] = React.useState(1);
+	const [open, setOpen] = useState(false);
 	const { loadUser: { data: { avatar, username, firstName, lastName, email, age, phone, college, course, gender, city, skills, links } } } = useSelector((state) => state.user);
+	const { editUser: { isLoading } } = useSelector((state) => state.user);
+	const { loadUser } = useSelector((state) => state.user);
+	const { editUser } = useSelector((state) => state.user);
+	const [githubLink, setGithubLink] = useState(links[0]?.url || null);
+	const [linkedInLink, setLinkedInLink] = useState(links[1]?.url || null);
+	const [twitterLink, setTwitterLink] = useState(links[2]?.url || null);
 	const handleChange = (event, newValue) => {
-		setValue(newValue)
+		setActiveTab(newValue)
 	}
+	const initialValues = {
+		firstName: firstName,
+		lastName: lastName,
+		age: age,
+		gender: gender.toLowerCase(),
+		oldPassword: "",
+		newPassword: "",
+		cofirmPassword: "",
+		college: college.toUpperCase(),
+		course: course,
+		city: city,
+		skills: skills
+	}
+	const [formData, setFormData] = useState(initialValues);
+	const dispatch = useDispatch();
+	const [image, setImage] = useState();
+	const [imagePreview, setImagePreview] = useState(avatar?.url || "");
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		setImage({});
+		setImagePreview("");
+		const reader = new FileReader();
+
+		reader.onload = () => {
+			if (reader.readyState === 2) {
+				setImagePreview(reader.result);
+				setImage(reader.result);
+			}
+		};
+		reader.readAsDataURL(file)
+	}
+	useEffect(() => {
+		if (loadUser.success) {
+			setFormData({
+				firstName: firstName,
+				lastName: lastName,
+				age: age,
+				gender: gender.toLowerCase(),
+				oldPassword: "",
+				newPassword: "",
+				cofirmPassword: "",
+				college: college.toUpperCase(),
+				course: course,
+				city: city,
+				skills: skills
+			});
+		}
+	}, [loadUser.data])
+	useEffect(() => {
+		if (editUser.success) {
+			setOpen(true);
+			dispatch(resetEditState());
+			setTimeout(() => {
+				setOpen(false);
+			}, 3500)
+		}
+	}, [isLoading])
 	return (
 		<>
-			<Header />
+			<Header iconShow={false} btnShow={false} />
 			<Grid
 				container
 				spacing={2}
@@ -107,7 +157,7 @@ function ProfileEdit() {
 						<Tabs
 							orientation="vertical"
 							variant="scrollable"
-							value={value}
+							value={activeTab}
 							onChange={handleChange}
 							aria-label="Vertical tabs example"
 							sx={{ borderRight: 1, borderColor: "divider", width: "20rem" }}
@@ -119,6 +169,7 @@ function ProfileEdit() {
 									flexDirection: "column",
 									alignItems: "center",
 									marginTop: "2rem",
+									position: "relative"
 								}}
 							>
 								<img
@@ -127,9 +178,26 @@ function ProfileEdit() {
 										height: "7.5rem",
 										borderRadius: "1rem",
 									}}
-									src={avatar.url}
+									src={imagePreview}
 									alt="profile_pic"
 								/>
+								<div style={{ position: "absolute", bottom: "45%" }}>
+									<input
+										accept="image/*"
+										type="file"
+										id="select-image"
+										style={{ display: "none" }}
+										onChange={handleImageChange}
+									/>
+									<label htmlFor="select-image">
+										{/* <IconButton component="span" variant='text' sx={{ textTransform: 'none', color: "#979797", background: "#efefef" }} >*/}
+										<CameraAlt />
+										{/* </IconButton> */}
+									</label>
+								</div>
+								<Button size="small" variant="contained" sx={{ marginTop: "0.5rem", fontFamily: "inherit", textTransform: "none" }} onClick={() => { }}>
+									Change profile
+								</Button>
 								<Box sx={{ marginTop: "0.3rem" }}>
 									<h3>{firstName + " " + lastName}</h3>
 								</Box>
@@ -156,7 +224,7 @@ function ProfileEdit() {
 							/>
 						</Tabs>
 						<Box sx={{ paddingLeft: "2rem" }}>
-							<TabPanel value={value} index={1}>
+							<TabPanel value={activeTab} index={1}>
 								<Typography
 									sx={{
 										fontFamily: "inherit",
@@ -210,9 +278,11 @@ function ProfileEdit() {
 									</Typography>
 									<TextField
 										required
-										id="outlined-required"
-										label="Required"
-										defaultValue={firstName}
+										id="firstName"
+										name="firstName"
+										label="First name"
+										value={formData.firstName}
+										onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
 									/>
 								</Box>
 								<Box
@@ -234,9 +304,11 @@ function ProfileEdit() {
 									</Typography>
 									<TextField
 										required
-										id="outlined-required"
-										label="Required"
-										defaultValue={lastName}
+										id="lastName"
+										label="Last Name"
+										name="lastName"
+										value={formData.lastName}
+										onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
 									/>
 								</Box>
 								<Box
@@ -256,16 +328,20 @@ function ProfileEdit() {
 									>
 										Gender :
 									</Typography>
-									<Select
-										label="Gender"
-										value={gender}
-									>
-										{genders.map((option) => (
-											<MenuItem key={option.value} value={option.label}>
-												{option.label}
-											</MenuItem>
-										))}
-									</Select>
+									<FormControl>
+										<InputLabel id="demo-simple-select-label">Gender</InputLabel>
+										<Select
+											id="gender"
+											label="Gender"
+											name="gender"
+											value={formData.gender}
+											onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
+										>
+											<MenuItem value={"male"}>Male</MenuItem>
+											<MenuItem value={"female"}>Female</MenuItem>
+											<MenuItem value={"other"}>Other</MenuItem>
+										</Select>
+									</FormControl>
 								</Box>
 								<Box
 									sx={{
@@ -285,11 +361,13 @@ function ProfileEdit() {
 										Age :
 									</Typography>
 									<TextField
+										id="age"
 										required
-										id="outlined-number"
-										label="Age"
 										type="text"
-										defaultValue={age}
+										label="Age"
+										name="age"
+										value={formData.age}
+										onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
 									/>
 								</Box>
 								<Box
@@ -297,12 +375,23 @@ function ProfileEdit() {
 										display: "flex",
 										alignItems: "center",
 										marginTop: "1.8rem",
+										position: "relative"
 									}}
 								>
-									<Button variant="contained">Save</Button>
+									{isLoading && (
+										<CircularProgress
+											size={24}
+											sx={{
+												position: "absolute",
+												bottom: "10%",
+												left: "4%",
+											}}
+										/>
+									)}
+									<Button disabled={isLoading} variant="contained" onClick={() => { dispatch(updateProfile(formData)); }} sx={{ textTransform: "none", fontFamily: "inherit" }}>Save</Button>
 								</Box>
 							</TabPanel>
-							<TabPanel value={value} index={2}>
+							<TabPanel value={activeTab} index={2}>
 								<Typography
 									sx={{
 										fontFamily: "inherit",
@@ -313,144 +402,161 @@ function ProfileEdit() {
 									Login Details
 								</Typography>
 								<Divider />
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "2rem",
-									}}
-								>
-									<Typography
+								<form>
+									<Box
 										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "13rem",
+											display: "flex",
+											alignItems: "center",
+											marginTop: "2rem",
 										}}
 									>
-										Contact No :
-									</Typography>
-									<TextField
-										disabled
-										id="outlined-number"
-										label="Number"
-										type="text"
-										defaultValue="9023381314"
-									/>
-								</Box>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "1rem",
-									}}
-								>
-									<Typography
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+												width: "13rem",
+											}}
+										>
+											Contact No :
+										</Typography>
+										<TextField
+											disabled
+											id="outlined-number"
+											label="Phone number *"
+											type="text"
+											defaultValue={phone}
+										/>
+									</Box>
+									<Box
 										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "13rem",
+											display: "flex",
+											alignItems: "center",
+											marginTop: "1rem",
 										}}
 									>
-										Email :
-									</Typography>
-									<TextField
-										disabled
-										id="outlined-required"
-										label="Email"
-										defaultValue="bavadiyakashyap@gmail.com"
-										sx={{ width: "20rem" }}
-									/>
-								</Box>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "1rem",
-									}}
-								>
-									<Typography
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+												width: "13rem",
+											}}
+										>
+											Email :
+										</Typography>
+										<TextField
+											disabled
+											id="outlined-required"
+											label="Email *"
+											defaultValue={email}
+											sx={{ width: "20rem" }}
+										/>
+									</Box>
+									<Box
 										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "13rem",
+											display: "flex",
+											alignItems: "center",
+											marginTop: "1rem",
 										}}
 									>
-										Current Password :
-									</Typography>
-									<TextField
-										id="outlined-password-input"
-										label="Password"
-										type="password"
-										autoComplete="current-password"
-										defaultValue="************"
-										sx={{ width: "20rem" }}
-									/>
-								</Box>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "1rem",
-									}}
-								>
-									<Typography
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+												width: "13rem",
+											}}
+										>
+											Current Password :
+										</Typography>
+										<TextField
+											id="currentPassword"
+											label="Current Password"
+											type="password"
+											autoComplete="current-password"
+											name="oldPassword"
+											onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
+											sx={{ width: "20rem" }}
+										/>
+									</Box>
+									<Box
 										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "13rem",
+											display: "flex",
+											alignItems: "center",
+											marginTop: "1rem",
 										}}
 									>
-										New Password :
-									</Typography>
-									<TextField
-										id="outlined-password-input"
-										label="Password"
-										type="password"
-										autoComplete="current-password"
-										sx={{ width: "20rem" }}
-									/>
-								</Box>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										marginTop: "1rem",
-									}}
-								>
-									<Typography
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+												width: "13rem",
+											}}
+										>
+											New Password :
+										</Typography>
+										<TextField
+											id="newPassword"
+											label="New Password"
+											type="password"
+											name="newPassword"
+											autoComplete="current-password"
+											sx={{ width: "20rem" }}
+											onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
+										/>
+									</Box>
+									<Box
 										sx={{
-											fontFamily: "inherit",
-											textAlign: "justify",
-											fontSize: "1.2rem",
-											width: "13rem",
+											display: "flex",
+											alignItems: "center",
+											marginTop: "1rem",
 										}}
 									>
-										C. New Password :
-									</Typography>
-									<TextField
-										id="outlined-password-input"
-										label="Confirm Password"
-										type="password"
-										autoComplete="current-password"
-										sx={{ width: "20rem" }}
-									/>
-								</Box>
-
+										<Typography
+											sx={{
+												fontFamily: "inherit",
+												textAlign: "justify",
+												fontSize: "1.2rem",
+												width: "13rem",
+											}}
+										>
+											C. New Password :
+										</Typography>
+										<TextField
+											id="confirmPassword"
+											label="Confirm Password"
+											type="password"
+											autoComplete="current-password"
+											sx={{ width: "20rem" }}
+											name="confirmPassword"
+											onChange={(e) => { setFormData({ ...formData, [e.target.name]: e.target.value }) }}
+										/>
+									</Box>
+								</form>
 								<Box
 									sx={{
 										display: "flex",
 										alignItems: "center",
 										marginTop: "1.8rem",
+										position: "relative"
 									}}
 								>
-									<Button variant="contained">Change Password</Button>
+									{isLoading && (
+										<CircularProgress
+											size={24}
+											sx={{
+												position: "absolute",
+												bottom: "10%",
+												left: "4%",
+											}}
+										/>
+									)}
+									<Button variant="contained" onClick={() => { dispatch(updateProfile(formData)) }} sx={{ textTransform: "none", fontFamily: "inherit" }}>Change Password</Button>
 								</Box>
 							</TabPanel>
-							<TabPanel value={value} index={3}>
+							<TabPanel value={activeTab} index={3}>
 								<Typography
 									sx={{
 										fontFamily: "inherit",
@@ -482,10 +588,12 @@ function ProfileEdit() {
 										disablePortal
 										id="college"
 										options={colleges}
+										value={colleges.find((option) => option.value === formData.college) || null}
 										getOptionLabel={(option) => option.label}
+										onChange={(e, newValue) => { setFormData({ ...formData, college: newValue?.value || null }) }}
 										sx={{ width: 300 }}
 										renderInput={(params) => (
-											<TextField {...params} label="College" />
+											<TextField {...params} label="College *" name="college" />
 										)}
 									/>
 								</Box>
@@ -510,9 +618,11 @@ function ProfileEdit() {
 										disablePortal
 										id="combo-box-demo"
 										options={courses}
+										value={courses.find((option) => option.value === formData.course) || null}
 										sx={{ width: 300 }}
+										onChange={(event, newValue) => { setFormData({ ...formData, course: newValue?.value || null }) }}
 										renderInput={(params) => (
-											<TextField {...params} label="Course" />
+											<TextField {...params} label="Course *" />
 										)}
 									/>
 								</Box>
@@ -537,6 +647,8 @@ function ProfileEdit() {
 										disablePortal
 										id="combo-box-demo"
 										options={cities}
+										value={cities.find((option) => option.label === formData.city.label) || null}
+										onChange={(event, newValue) => { setFormData({ ...formData, city: newValue || null }) }}
 										getOptionLabel={(option) => option.label}
 										sx={{ width: 300 }}
 										renderInput={(params) => (
@@ -550,12 +662,23 @@ function ProfileEdit() {
 										display: "flex",
 										alignItems: "center",
 										marginTop: "2.4rem",
+										position: "relative"
 									}}
 								>
-									<Button variant="contained">Save</Button>
+									{isLoading && (
+										<CircularProgress
+											size={24}
+											sx={{
+												position: "absolute",
+												bottom: "10%",
+												left: "4%",
+											}}
+										/>
+									)}
+									<Button disabled={isLoading} variant="contained" sx={{ fontFamily: "inherit", textTransform: "none" }} onClick={() => { dispatch(updateProfile(formData)); }}>Save</Button>
 								</Box>
 							</TabPanel>
-							<TabPanel value={value} index={4}>
+							<TabPanel value={activeTab} index={4}>
 								<Typography
 									sx={{
 										fontFamily: "inherit",
@@ -591,7 +714,8 @@ function ProfileEdit() {
 										multiple
 										id="combo-box-demo"
 										options={Skills}
-										defaultValue={skills}
+										value={formData.skills || null}
+										onChange={(e, newValue) => { setFormData({ ...formData, skills: newValue || null }) }}
 										renderInput={(params) => (
 											<TextField {...params} label="Skills" />
 										)}
@@ -626,8 +750,9 @@ function ProfileEdit() {
 												variant="standard"
 												id="github-link"
 												type="text"
-												defaultValue={links[0].url}
+												value={githubLink}
 												placeholder="Github profile"
+												onChange={(e) => { setGithubLink(e.target.value) }}
 											/>
 										</Box>
 										<Box sx={{ display: 'flex', alignItems: 'flex-end', gap: "1rem" }}>
@@ -637,8 +762,9 @@ function ProfileEdit() {
 												variant="standard"
 												id="linkedin-link"
 												type="text"
-												defaultValue={links[1].url}
+												value={linkedInLink}
 												placeholder="LinkedIn profile"
+												onChange={(e) => { setLinkedInLink(e.target.value) }}
 											/>
 										</Box>
 										<Box sx={{ display: 'flex', alignItems: 'flex-end', gap: "1rem" }}>
@@ -648,17 +774,46 @@ function ProfileEdit() {
 												variant="standard"
 												id="twitter-link"
 												type="text"
-												defaultValue={links[2].url}
+												value={twitterLink}
 												placeholder="Twitter profile"
+												onChange={(e) => { setTwitterLink(e.target.value) }}
 											/>
 										</Box>
 									</Box>
 								</Box>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										marginTop: "2.4rem",
+										position: "relative"
+									}}
+								>
+									{isLoading && (
+										<CircularProgress
+											size={24}
+											sx={{
+												position: "absolute",
+												bottom: "10%",
+												left: "4%",
+											}}
+										/>
+									)}
+									<Button disabled={isLoading} variant="contained" sx={{ fontFamily: "inherit", textTransform: "none" }}
+										onClick={() => {
+											const newLinks = [{ platform: "github", url: githubLink }, { platform: "linkedin", url: linkedInLink }, { platform: "twitter", url: twitterLink }];
+											dispatch(updateProfile({ ...formData, links: newLinks }));
+										}}
+									>
+										Save
+									</Button>
+								</Box>
 							</TabPanel>
+							{open && <Alert message={"Profile updated!!"} severity={"success"} verticalPos={"bottom"} horizontalPos={"right"} />}
 						</Box>
 					</Box>
 				</Grid>
-			</Grid>
+			</Grid >
 		</>
 	)
 }

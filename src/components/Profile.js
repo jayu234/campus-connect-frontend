@@ -7,7 +7,7 @@ import { Grid, Box } from "@mui/material"
 function Profile() {
 	return (
 		<>
-			<Header />
+			<Header  iconShow={false}/>
 			<Grid
 				container
 				spacing={2}

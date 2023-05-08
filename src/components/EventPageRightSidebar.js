@@ -1,23 +1,14 @@
-import React from "react"
+import React, { useState } from "react"
 import Card from "@mui/material/Card"
-import CardHeader from "@mui/material/CardHeader"
 import CardContent from "@mui/material/CardContent"
 import CardActions from "@mui/material/CardActions"
-import Avatar from "@mui/material/Avatar"
-import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"
-import ThumbDownIcon from "@mui/icons-material/ThumbDown"
-import { Button, Divider, Menu, MenuItem } from "@mui/material"
-import EditIcon from "@mui/icons-material/Edit"
-import ShareIcon from "@mui/icons-material/Share"
+import { Button, Divider, IconButton } from "@mui/material"
 import { Box } from "@mui/system"
-import ProfileQuestionModal from "./ProfileQuestionModal"
-import { questionanswer } from "../data/questionanswer"
-import AnswerPageComponent from "./AnswerPageComponent"
-
-import { BsHeart } from "react-icons/bs"
+import { useDispatch, useSelector } from "react-redux"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { BsHeart, BsHeartFill } from "react-icons/bs"
 
 const months = [
 	"January",
@@ -34,16 +25,36 @@ const months = [
 	"December",
 ]
 
-function EventPageRightSidebar({ props }) {
-	const [anchorEl, setAnchorEl] = React.useState(null)
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget)
+function EventPageRightSidebar({ data }) {
+	const { loadUser } = useSelector((state) => state.user);
+	const userId = loadUser.data._id;
+	const [isLiked, setIsLiked] = useState(data.likes.includes(userId));
+	const [likes, setLikes] = useState(data.likes.length);
+	const navigate = useNavigate();
+	const handleToggleLikeUnlike = async () => {
+		if (isLiked) {
+			setIsLiked(!isLiked);
+			setLikes(likes - 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/event/like/${data._id}`).catch((err) => {
+				setLikes(likes + 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to unlike post", err);
+			});
+		} else {
+			setIsLiked(!isLiked);
+			setLikes(likes + 1);
+			await axios.post(`${process.env.REACT_APP_BASE_URL}/event/like/${data._id}`).catch((err) => {
+				setLikes(likes - 1);
+				setIsLiked(!isLiked);
+				console.log("Falied to like post", err);
+			});
+		}
 	}
-
-	const handleClose = () => {
-		setAnchorEl(null)
-	}
+	const date = new Date(data.createdAt);
+	const options = { hour: 'numeric', hour12: true };
+	const timeString = date.toLocaleString('en-US', options);
+	const [time, period] = timeString.split(' ');
+	const formattedTime = `${time} ${period}`;
 	return (
 		<>
 			<Box sx={{ marginBottom: "7rem" }}>
@@ -63,7 +74,7 @@ function EventPageRightSidebar({ props }) {
 							fontWeight: "500",
 						}}
 					>
-						Udaan - BVM Cultural Festival
+						{data.title}
 					</Box>
 				</Box>
 
@@ -84,40 +95,28 @@ function EventPageRightSidebar({ props }) {
 							borderRadius: "1rem",
 						}}
 						alt="The house from the offer."
-						src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+						src={data.image.url}
 					/>
-					<CardContent sx={{ padding: "0rem 1.5rem" }}>
-						<Typography
-							variant="h5"
-							sx={{ fontFamily: "inherit", fontWeight: "500", marginTop:'1rem' }}
-						>
-							BVM Engineering College
-						</Typography>
+					<CardContent sx={{ padding: "0rem 1.5rem", marginTop: "1rem" }}>
 						<Typography
 							variant="body1"
-							color="text.secondary"
+							color="text"
 							sx={{
 								fontFamily: "inherit",
 								textAlign: "justify",
 								fontSize: "1.25rem",
 								fontWeight: "500",
+								marginY: "0.5rem"
 							}}
 						>
-							A new Beauty of Event
+							{data.title}
 						</Typography>
 						<Typography
 							variant="body1"
-							color="text.secondary"
-							sx={{ fontFamily: "inherit", textAlign: "justify" }}
+							color="text"
+							sx={{ fontFamily: "inherit", textAlign: "justify", marginBottom: "0.5rem" }}
 						>
-							"Web development has come a long way since its inception, and one
-							tool that has made a significant impact is Chrome DevTools. It has
-							revolutionized how web developers, QAs, and backend developers
-							develop, test & debug web apps. Today, you can't imagine building
-							web apps without access to Chrome Devtools. It provides complete
-							visibility into what's happening inside your web application, from
-							the HTML DOM at any given point to the network requests your app
-							fired.
+							{data.description}
 						</Typography>
 						<Typography
 							sx={{
@@ -127,7 +126,7 @@ function EventPageRightSidebar({ props }) {
 								marginTop: "0.5rem",
 							}}
 						>
-							Time : 8pm
+							Time : {formattedTime}
 						</Typography>
 						<Typography
 							sx={{
@@ -136,7 +135,7 @@ function EventPageRightSidebar({ props }) {
 								fontSize: "1.1rem",
 							}}
 						>
-							Date : 2023-02-24
+							Date : {` ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`}
 						</Typography>
 						<Typography
 							sx={{
@@ -145,16 +144,7 @@ function EventPageRightSidebar({ props }) {
 								fontSize: "1.1rem",
 							}}
 						>
-							Location : V.V.Nagar, Anand
-						</Typography>
-						<Typography
-							sx={{
-								fontFamily: "inherit",
-								color: "black",
-								fontSize: "1.1rem",
-							}}
-						>
-							Entry Fees : 5$
+							Location : {data.location.label}
 						</Typography>
 					</CardContent>
 
@@ -163,18 +153,12 @@ function EventPageRightSidebar({ props }) {
 						disableSpacing
 					>
 						<Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-							<Button
-								component={"div"}
-								sx={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									fontSize: "1.1rem",
-								}}
-								startIcon={<BsHeart size={23} />}
-							>
-								50
-							</Button>
+							<IconButton color={"black"} onClick={handleToggleLikeUnlike}>
+								{isLiked ? <BsHeartFill size={23} color='#757575' /> : <BsHeart size={23} color='#757575' />}
+							</IconButton>
+							{likes > 0 && <Typography color={"black"} component={"span"} variant="body1" fontFamily={"inherit"} marginRight={"1rem"}>
+								{likes}
+							</Typography>}
 						</Box>
 					</CardActions>
 					<Divider />

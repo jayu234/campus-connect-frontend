@@ -1,30 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from "@mui/material/Box"
-import Card from "@mui/material/Card"
-import CardHeader from "@mui/material/CardHeader"
-import CardContent from "@mui/material/CardContent"
-import CardActions from "@mui/material/CardActions"
-import Avatar from "@mui/material/Avatar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
 import { Button } from "@mui/material"
-import { topics } from "../data/topics"
-import CreateIcon from "@mui/icons-material/Create"
-import { FiPlus } from "react-icons/fi"
-import { BsCheck2 } from "react-icons/bs"
-import { IoPeopleOutline } from "react-icons/io5"
-import { GrArticle } from "react-icons/gr"
-import { TiFlashOutline } from "react-icons/ti"
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { color, fontSize } from "@mui/system"
-import TopicPost from "./TopicPost"
 import EventsPost from "./EventsPost"
+import EventModal from './EventModal'
 
 function Events() {
+	const [open, setOpen] = useState(false);
 	return (
 		<React.Fragment>
-			<Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}} >
+			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} >
+				{open && (
+					<EventModal open={open} setOpen={setOpen} />
+				)}
 				<Box
 					sx={{
 						display: "flex",
@@ -54,6 +42,7 @@ function Events() {
 						":hover": { boxShadow: "none" }
 					}}
 					startIcon={<AddRoundedIcon />}
+					onClick={() => { setOpen(true) }}
 				>
 					Add Event
 				</Button>

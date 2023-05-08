@@ -8,9 +8,20 @@ import { FaInstagram } from "react-icons/fa"
 import Link from "@mui/material/Link"
 import { skills } from "../data/skills"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 function ProfileLeftSidebar() {
-	const { loadUser: { data: { avatar, city, username, firstName, lastName, college, course, skills } } } = useSelector((state) => state.user);
+	const { loadUser: { data: { avatar, city, username, firstName, lastName, college, course, skills, links } } } = useSelector((state) => state.user);
+	const navigate = useNavigate();
+	const githubRegex = /^(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)$/;
+	const linkedinRegex = /^(?:https?:\/\/)?(?:www\.)?linkedin\.com\/(?:in|company)\/([a-zA-Z0-9_-]+)(?:\/|$)/;
+	const twitterRegex = /^(?:https?:\/\/)?(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)(?:\/|$)/;
+	const githubMatch = (links.length && links[0].length > 0) ? links[0].url.match(githubRegex) : undefined;
+	const linkedInMatch = (links.length && links[1].length > 0) ? links[1].url.match(linkedinRegex) : undefined;
+	const twitterMatch = (links.length && links[2].length > 0) ? links[2].url.match(twitterRegex) : undefined;
+	const githubUser = githubMatch ? githubMatch[1] : null;
+	const linkedinUser = linkedInMatch ? linkedInMatch[1] : null;
+	const twitterUser = twitterMatch ? twitterMatch[1] : null;
 	return (
 		<>
 			<Box sx={{ paddingX: "1rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
@@ -75,8 +86,8 @@ function ProfileLeftSidebar() {
 					<Box>
 						<strong>Links</strong>
 					</Box>
-					<Box sx={{ fontSize: "13px", paddingLeft: "0.2rem" }}>
-						{<Box
+					{links.length > 0 ? <Box sx={{ fontSize: "13px", paddingLeft: "0.2rem" }}>
+						{(links[0].url.length > 0) && (<Box
 							sx={{
 								marginTop: "0.7rem",
 								display: "flex",
@@ -85,14 +96,14 @@ function ProfileLeftSidebar() {
 						>
 							<BsGithub size={16} />
 							<Link
-								href="https://github.com/kashyapmb"
+								href={links[0].url}
 								underline="hover"
 								sx={{ color: "black", marginLeft: "0.4rem" }}
 							>
-								{"kashyapmb"}
+								{links[0].url}
 							</Link>
-						</Box>}
-						<Box
+						</Box>)}
+						{(links[1].url.length > 0) && (<Box
 							sx={{
 								marginTop: "1rem",
 								display: "flex",
@@ -101,14 +112,14 @@ function ProfileLeftSidebar() {
 						>
 							<BsLinkedin size={16} />
 							<Link
-								href="https://www.linkedin.com/in/kashyap-bavadiya-0485a2236/"
+								href={links[1].url}
 								underline="hover"
 								sx={{ color: "black", marginLeft: "0.4rem" }}
 							>
-								{"kashyap-bavadiya-0485a2236"}
+								{links[1].url}
 							</Link>
-						</Box>
-						<Box
+						</Box>)}
+						{(links[2].url.length > 0) && (<Box
 							sx={{
 								marginTop: "1rem",
 								display: "flex",
@@ -117,14 +128,14 @@ function ProfileLeftSidebar() {
 						>
 							<BsTwitter size={16} />
 							<Link
-								href="https://www.instagram.com/kashyapbavadiya/"
+								href={links[2].url}
 								underline="hover"
 								sx={{ color: "black", marginLeft: "0.4rem" }}
 							>
-								{"kashyapbavadiya"}
+								{links[2].url}
 							</Link>
-						</Box>
-					</Box>
+						</Box>)}
+					</Box> : <Typography align="center" variant="caption" fontFamily={"inherit"} onClick={() => navigate("/profile/edit")}>Add your profiles</Typography>}
 					{/* <Box mt={2} sx={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
 						<Typography variant="caption" align="center" fontFamily={'inherit'}>You haven't added any links to your profile</Typography>
 						<Button variant="text" sx={{marginTop: "0.25rem",paddingY: "0.10rem" , fontSize: "0.75rem" ,textTransform: 'none'}}>+ Add one</Button>
@@ -137,13 +148,13 @@ function ProfileLeftSidebar() {
 						<strong>Skills</strong>
 					</Box>
 					<Box sx={{ marginTop: "0.5rem", paddingLeft: '0.3rem', lineHeight: '1.3rem' }}>
-						{skills.map((item) => {
+						{skills.length > 0 ? skills.map((item) => {
 							return (
 								<Typography fontFamily={'inherit'} fontSize={'14px'}>
 									{item}
 								</Typography>
 							)
-						})}
+						}) : <Typography align="center" variant="caption" fontFamily={"inherit"} onClick={() => navigate("/profile/edit")}>Add your skills</Typography>}
 					</Box>
 				</Box>
 			</Box>

@@ -16,6 +16,7 @@ import { Box } from "@mui/system"
 
 import CreateIcon from "@mui/icons-material/Create"
 import ProfileQuestionModal from "./ProfileQuestionModal"
+import { useSelector } from "react-redux"
 
 const months = [
 	"January",
@@ -33,15 +34,8 @@ const months = [
 ]
 
 function ProfileQuestionComponent({ doubt }) {
-	const [anchorEl, setAnchorEl] = React.useState(null)
-
-	const handleMenu = (event) => {
-		setAnchorEl(event.currentTarget)
-	}
-
-	const handleClose = () => {
-		setAnchorEl(null)
-	}
+	const { loadUser } = useSelector((state) => state.user);
+	const id = loadUser.data._id;
 
 	const [open, setOpen] = React.useState(false)
 
@@ -59,7 +53,7 @@ function ProfileQuestionComponent({ doubt }) {
 					marginBottom: "1rem",
 				}}
 			>
-				<CardContent sx={{padding:'0.8rem 1.5rem 0rem 1.5rem'}}>
+				<CardContent sx={{ padding: '0.8rem 1.5rem 0rem 1.5rem' }}>
 					<Typography variant="subtitle1" sx={{ fontFamily: "inherit" }}>
 						<strong>{doubt.content}</strong>
 					</Typography>
@@ -72,7 +66,7 @@ function ProfileQuestionComponent({ doubt }) {
 						{doubt.answers.length < 2 ? " Answer" : " Answers"}
 					</Typography>
 				</CardContent>
-				<Box sx={{padding:'0.4rem 0rem 1rem 1rem'}}>
+				{doubt.author._id !== id && <Box sx={{ padding: '0.4rem 0rem 1rem 1rem' }}>
 					<Button
 						variant="contained"
 						component="p"
@@ -81,9 +75,9 @@ function ProfileQuestionComponent({ doubt }) {
 							backgroundColor: "white",
 							borderRadius: "20px",
 							textTransform: "none",
-							color:'black',
+							color: 'black',
 							boxShadow: "none",
-							":hover": { backgroundColor:'#f8fafc'},
+							":hover": { backgroundColor: '#f8fafc' },
 						}}
 						onClick={() => {
 							setOpen(true)
@@ -91,7 +85,7 @@ function ProfileQuestionComponent({ doubt }) {
 					>
 						Give Answer
 					</Button>
-				</Box>
+				</Box>}
 			</Card>
 		</>
 	)
